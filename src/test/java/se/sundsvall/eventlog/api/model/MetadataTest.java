@@ -53,5 +53,6 @@ class MetadataTest {
 	@Test
 	void testNoDirtOnCreatedBean() {
 		assertThat(Metadata.create()).hasAllNullFieldsOrProperties();
+		assertThat(new Metadata()).hasAllNullFieldsOrProperties();
 	}
 }
