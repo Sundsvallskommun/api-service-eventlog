@@ -19,8 +19,13 @@
 		<published.container.port.production>9730</published.container.port.production>
 		<!-- Service properties -->
 		<testcontainers.version>1.18.0</testcontainers.version>
+		<spring-filter.version>2.1.5</spring-filter.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-common-validators</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -43,6 +48,11 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-mysql</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.turkraft</groupId>
+			<artifactId>spring-filter</artifactId>
+			<version>${spring-filter.version}</version>
+		</dependency>
 		
 		<!-- Test -->
 		<dependency>
@@ -63,4 +73,18 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/se/sundsvall/eventlog/Application*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
