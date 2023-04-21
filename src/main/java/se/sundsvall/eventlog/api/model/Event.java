@@ -34,7 +34,7 @@ public class Event {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private OffsetDateTime timestamp;
 
-	@Schema(description = "External reference for event", example = "fbe2fb67-005c-4f26-990f-1c95b5f6933e", nullable = true)
+	@Schema(description = "Historical external reference to and immutable snapshot of data", example = "fbe2fb67-005c-4f26-990f-1c95b5f6933e", nullable = true)
 	@ValidUuid(nullable = true)
 	private String historyReference;
 

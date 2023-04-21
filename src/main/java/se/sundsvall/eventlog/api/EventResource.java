@@ -52,14 +52,14 @@ public class EventResource {
 
 	@GetMapping(produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
 	@Operation(summary = "Fetch log events", description = "Fetch log events for a specific logKey, with or without filtering the result")
-	@ApiResponse(responseCode = "200", description = "Successful Operation", content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = Event.class)))
+	@ApiResponse(responseCode = "200", description = "Successful Operation")
 	@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = { Problem.class, ConstraintViolationProblem.class })))
 	@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	public ResponseEntity<Page<Event>> getEvents(
 		@Parameter(name = "logKey", description = "Events stored under this UUID", example = "f0882f1d-06bc-47fd-b017-1d8307f5ce95") @ValidUuid @PathVariable String logKey,
 		@Parameter(description = "Syntax description: [spring-filter](https://github.com/turkraft/spring-filter/blob/85730f950a5f8623159cc0eb4d737555f9382bb7/README.md#syntax)",
-			example = "TODO: Add example",
+			example = "metadata.key:'user' and metadata.value:'john01'",
 			schema = @Schema(implementation = String.class)) @Filter Specification<Void> filter, // TODO Add EventEntity as Specification
 		@ParameterObject final Pageable pageable) {
 
