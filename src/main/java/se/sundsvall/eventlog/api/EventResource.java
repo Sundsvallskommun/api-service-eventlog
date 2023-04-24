@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.accepted;
+import static org.springframework.http.ResponseEntity.ok;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -66,6 +67,6 @@ public class EventResource {
 			schema = @Schema(implementation = String.class)) @Filter final Specification<EventEntity> filter,
 		@ParameterObject final Pageable pageable) {
 
-		return ResponseEntity.ok(null);
+		return ok(null);
 	}
 }
