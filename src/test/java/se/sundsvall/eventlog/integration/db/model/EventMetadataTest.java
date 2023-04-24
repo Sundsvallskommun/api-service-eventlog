@@ -1,4 +1,4 @@
-package se.sundsvall.eventlog.api.model;
+package se.sundsvall.eventlog.integration.db.model;
 
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
@@ -6,16 +6,16 @@ import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanToString;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.AllOf.allOf;
 
 import org.junit.jupiter.api.Test;
 
-class MetadataTest {
+class EventMetadataTest {
 
 	@Test
 	void testBean() {
-		assertThat(Metadata.class, allOf(
+		assertThat(EventMetadata.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
 			hasValidBeanHashCode(),
@@ -24,23 +24,23 @@ class MetadataTest {
 	}
 
 	@Test
-	void testBuilderMethods() {
+	void hasValidBuilderMethods() {
 
 		final var key = "key";
 		final var value = "value";
 
-		final var bean = Metadata.create()
+		final var object = EventMetadata.create()
 			.withKey(key)
 			.withValue(value);
 
-		assertThat(bean).isNotNull().hasNoNullFieldsOrProperties();
-		assertThat(bean.getKey()).isEqualTo(key);
-		assertThat(bean.getValue()).isEqualTo(value);
+		assertThat(object).hasNoNullFieldsOrProperties();
+		assertThat(object.getKey()).isEqualTo(key);
+		assertThat(object.getValue()).isEqualTo(value);
 	}
 
 	@Test
-	void testNoDirtOnCreatedBean() {
-		assertThat(Metadata.create()).hasAllNullFieldsOrProperties();
-		assertThat(new Metadata()).hasAllNullFieldsOrProperties();
+	void hasNoDirtOnCreatedBean() {
+		assertThat(new EventMetadata()).hasAllNullFieldsOrProperties();
+		assertThat(EventMetadata.create()).hasAllNullFieldsOrProperties();
 	}
 }
