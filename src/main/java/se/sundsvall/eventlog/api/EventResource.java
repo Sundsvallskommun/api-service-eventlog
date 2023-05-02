@@ -6,10 +6,12 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.accepted;
 import static org.springframework.http.ResponseEntity.ok;
 
+import javax.annotation.Nullable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,12 +37,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
+import se.sundsvall.eventlog.service.EventService;
 
 @RestController
 @Validated
 @RequestMapping("/{logKey}")
 @Tag(name = "Events", description = "Event operations")
 public class EventResource {
+
+	@Autowired
+	private EventService eventService;
 
 	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = { ALL_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
 	@Operation(summary = "Create log event", description = "Creates a log event under logKey")
@@ -51,6 +57,7 @@ public class EventResource {
 		@Parameter(name = "logKey", description = "Event will be stored under this UUID. Used to separate data under a unique id.", example = "f0882f1d-06bc-47fd-b017-1d8307f5ce95") @ValidUuid @PathVariable final String logKey,
 		@Valid @NotNull @RequestBody final Event event) {
 
+		eventService.createEvent(logKey, event);
 		return accepted().build();
 	}
 
@@ -62,11 +69,11 @@ public class EventResource {
 	@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	public ResponseEntity<Page<Event>> getEvents(
 		@Parameter(name = "logKey", description = "Events stored under this UUID", example = "f0882f1d-06bc-47fd-b017-1d8307f5ce95") @ValidUuid @PathVariable final String logKey,
-		@Parameter(description = "Syntax description: [spring-filter](https://github.com/turkraft/spring-filter/blob/85730f950a5f8623159cc0eb4d737555f9382bb7/README.md#syntax)",
-			example = "metadata.key:'user' and metadata.value:'john01'",
-			schema = @Schema(implementation = String.class)) @Filter final Specification<EventEntity> filter,
+		@Parameter(description = "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)",
+			example = "metadata.key:'userId' and metadata.value:'john123'",
+			schema = @Schema(implementation = String.class)) @Nullable @Filter final Specification<EventEntity> filter,
 		@ParameterObject final Pageable pageable) {
 
-		return ok(null);
+		return ok(eventService.findEvents(logKey, filter, pageable));
 	}
 }

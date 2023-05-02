@@ -48,21 +48,21 @@ class EventTest {
 		final var metadata = Metadata.create().withKey("key").withValue("value");
 
 		final var bean = Event.create()
-			.withEventType(eventType)
+			.withType(eventType)
 			.withMessage(message)
-			.withExpireDate(expireDate)
+			.withExpires(expireDate)
 			.withOwner(owner)
-			.withTimestamp(timestamp)
+			.withCreated(timestamp)
 			.withHistoryReference(historyReference)
 			.withSourceType(sourceType)
 			.withMetadata(List.of(metadata));
 
 		assertThat(bean).isNotNull().hasNoNullFieldsOrProperties();
-		assertThat(bean.getEventType()).isEqualTo(eventType);
+		assertThat(bean.getType()).isEqualTo(eventType);
 		assertThat(bean.getMessage()).isEqualTo(message);
-		assertThat(bean.getExpireDate()).isEqualTo(expireDate);
+		assertThat(bean.getExpires()).isEqualTo(expireDate);
 		assertThat(bean.getOwner()).isEqualTo(owner);
-		assertThat(bean.getTimestamp()).isEqualTo(timestamp);
+		assertThat(bean.getCreated()).isEqualTo(timestamp);
 		assertThat(bean.getHistoryReference()).isEqualTo(historyReference);
 		assertThat(bean.getSourceType()).isEqualTo(sourceType);
 		assertThat(bean.getMetadata()).containsExactly(metadata);

@@ -53,10 +53,10 @@ class EventResourceTest {
 
 	private Event createEvent() {
 		return Event.create()
-			.withEventType(EventType.CREATE)
+			.withType(EventType.CREATE)
 			.withMessage("Message")
 			.withOwner("owner")
-			.withExpireDate(OffsetDateTime.now().plusYears(10))
+			.withExpires(OffsetDateTime.now().plusYears(10))
 			.withHistoryReference(UUID.randomUUID().toString())
 			.withSourceType("sourceType")
 			.withMetadata(List.of(Metadata.create().withKey("key").withValue("value")));
