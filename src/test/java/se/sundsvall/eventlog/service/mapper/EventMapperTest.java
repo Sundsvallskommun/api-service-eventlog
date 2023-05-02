@@ -75,6 +75,4 @@ class EventMapperTest {
 		assertThat(event.getSourceType()).isEqualTo(SOURCE_TYPE);
 		assertThat(event.getMetadata()).containsExactly(Metadata.create().withKey(KEY).withValue(VALUE));
 	}
-
-
 }

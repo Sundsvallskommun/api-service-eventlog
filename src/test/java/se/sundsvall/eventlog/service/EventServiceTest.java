@@ -67,7 +67,6 @@ class EventServiceTest {
 	@Test
 	void findEvents() {
 		Specification<EventEntity> filter = new FilterSpecification<>("owner: 'service-x'");
-		Specification<EventEntity> expectedFilterAddition = (root, cq, cb) -> cb.equal(root.get("logKey"), LOG_KEY);
 
 		when(eventRepositoryMock.findAll(any(Specification.class), any(Pageable.class))).thenReturn(eventEntityPageMock);
 		when(eventEntityPageMock.stream()).thenReturn(Stream.of(eventEntityMock));
