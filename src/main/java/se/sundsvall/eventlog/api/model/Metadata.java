@@ -2,7 +2,7 @@ package se.sundsvall.eventlog.api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Schema(description = "Metadata model")
@@ -12,7 +12,7 @@ public class Metadata {
 	@NotBlank
 	private String key;
 
-	@Schema(description = "The value", example = "john123")
+	@Schema(description = "The value", example = "jakarta.")
 	@NotBlank
 	private String value;
 

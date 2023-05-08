@@ -2,6 +2,8 @@ package se.sundsvall.eventlog.integration.db;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -12,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 @SpringBootTest
 @ActiveProfiles("junit")
@@ -19,7 +22,7 @@ class SchemaVerificationTest {
 
 	private static final String STORED_SCHEMA_FILE = "db/scripts/schema.sql";
 
-	@Value("${spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target}")
+	@Value("${spring.jpa.properties.jakarta.persistence.schema-generation.scripts.create-target}")
 	private String generatedSchemaFile;
 
 	@Test
