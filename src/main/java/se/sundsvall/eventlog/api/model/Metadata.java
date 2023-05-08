@@ -12,7 +12,7 @@ public class Metadata {
 	@NotBlank
 	private String key;
 
-	@Schema(description = "The value", example = "jakarta.")
+	@Schema(description = "The value", example = "john123")
 	@NotBlank
 	private String value;
 
