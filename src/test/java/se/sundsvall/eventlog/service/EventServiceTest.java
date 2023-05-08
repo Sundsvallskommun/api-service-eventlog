@@ -1,6 +1,5 @@
 package se.sundsvall.eventlog.service;
 
-import com.turkraft.springfilter.boot.FilterSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -49,6 +48,9 @@ class EventServiceTest {
 	@Mock
 	private Page<EventEntity> eventEntityPageMock;
 
+	@Mock
+	private Specification<EventEntity> specificationMock;
+
 	@InjectMocks
 	private EventService eventService;
 
@@ -66,7 +68,6 @@ class EventServiceTest {
 
 	@Test
 	void findEvents() {
-		Specification<EventEntity> filter = new FilterSpecification<>("owner: 'service-x'");
 
 		when(eventRepositoryMock.findAll(any(Specification.class), any(Pageable.class))).thenReturn(eventEntityPageMock);
 		when(eventEntityPageMock.stream()).thenReturn(Stream.of(eventEntityMock));
@@ -74,10 +75,10 @@ class EventServiceTest {
 		try(MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
 			mapper.when(() -> EventMapper.toEvent(any())).thenReturn(eventMock);
 
-			var result = eventService.findEvents(LOG_KEY, filter, pageableMock);
+			var result = eventService.findEvents(LOG_KEY, specificationMock, pageableMock);
 
 			verify(eventRepositoryMock).findAll(specificationArgumentCaptor.capture(), same(pageableMock));
-			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(logKeyFilter(LOG_KEY).and(filter));
+			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(logKeyFilter(LOG_KEY).and(specificationMock));
 			mapper.verify(() -> EventMapper.toEvent(same(eventEntityMock)));
 
 			assertThat(result.getSize()).isEqualTo(1);

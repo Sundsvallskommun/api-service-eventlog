@@ -14,7 +14,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.transaction.Transactional;
+import com.turkraft.springfilter.converter.FilterSpecificationConverter;
+import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,7 +30,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.turkraft.springfilter.boot.FilterSpecification;
+
 
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.integration.db.model.EventMetadata;
@@ -50,6 +51,10 @@ class EventRepositoryTest {
 
 	@Autowired
 	private EventRepository repository;
+
+	@Autowired
+	private FilterSpecificationConverter filterSpecificationConverter;
+
 
 	@Test
 	void create() {
@@ -107,7 +112,7 @@ class EventRepositoryTest {
 	})
 	void findByFilter(final String filter) {
 
-		final Specification<EventEntity> specification = new FilterSpecification<>(filter);
+		final Specification<EventEntity> specification = filterSpecificationConverter.convert(filter);
 		final Pageable pageable = PageRequest.of(0, 20);
 
 		final var entityList = repository.findAll(specification, pageable);
@@ -128,7 +133,7 @@ class EventRepositoryTest {
 		final var filter = arguments.get("filter");
 		final var expectedResults = Integer.parseInt(arguments.get("expectedResults"));
 
-		final Specification<EventEntity> specification = new FilterSpecification<>(filter);
+		final Specification<EventEntity> specification = filterSpecificationConverter.convert(filter);
 		final Pageable pageable = PageRequest.of(0, 20);
 
 		final var entityList = repository.findAll(distinct().and(withLogKey(logKey)).and(specification), pageable);
