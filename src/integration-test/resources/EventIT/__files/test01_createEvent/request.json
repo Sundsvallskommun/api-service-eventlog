@@ -1,0 +1,14 @@
+{
+  "type": "CREATE",
+  "message": "Request saved in database",
+  "expires": "2030-10-31T01:30:00+02:00",
+  "owner": "ServiceX",
+  "historyReference": "fbe2fb67-005c-4f26-990f-1c95b5f6933e",
+  "sourceType": "errand",
+  "metadata": [
+    {
+      "key": "userId",
+      "value": "john123"
+    }
+  ]
+}
