@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>se.sundsvall</groupId>
 	<artifactId>api-service-eventlog</artifactId>
-	<version>0.2</version>
+	<version>1.0</version>
 	<name>api-service-eventlog</name>
 	<properties>
 		<!-- Pipeline properties -->
