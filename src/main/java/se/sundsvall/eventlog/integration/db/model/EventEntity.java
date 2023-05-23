@@ -3,10 +3,15 @@ package se.sundsvall.eventlog.integration.db.model;
 import static java.time.OffsetDateTime.now;
 import static java.time.ZoneId.systemDefault;
 import static java.time.temporal.ChronoUnit.MILLIS;
+import static org.hibernate.annotations.TimeZoneStorageType.NORMALIZE;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+
+import org.hibernate.Length;
+import org.hibernate.annotations.TimeZoneStorage;
+import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -14,15 +19,11 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.Length;
 
 @Entity
 @Table(name = "event",
@@ -32,8 +33,7 @@ import org.hibernate.Length;
 public class EventEntity {
 
 	@Id
-	@GeneratedValue(generator = "uuid2")
-	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+	@UuidGenerator
 	@Column(name = "id")
 	private String id;
 
@@ -56,9 +56,11 @@ public class EventEntity {
 	private String historyReference;
 
 	@Column(name = "created")
+	@TimeZoneStorage(NORMALIZE)
 	private OffsetDateTime created;
 
 	@Column(name = "expires")
+	@TimeZoneStorage(NORMALIZE)
 	private OffsetDateTime expires;
 
 	@ElementCollection(fetch = FetchType.EAGER)
