@@ -18,7 +18,6 @@
 		<published.container.port.test>9730</published.container.port.test>
 		<published.container.port.production>9730</published.container.port.production>
 		<!-- Service properties -->
-		<testcontainers.version>1.18.1</testcontainers.version>
 		<spring-filter.version>3.1.0</spring-filter.version>
 	</properties>
 	<dependencies>
@@ -53,7 +52,6 @@
 			<artifactId>jpa</artifactId>
 			<version>${spring-filter.version}</version>
 		</dependency>
-		
 		<!-- Test -->
 		<dependency>
 			<groupId>se.sundsvall.dept44</groupId>
@@ -62,14 +60,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>testcontainers</artifactId>
-			<version>${testcontainers.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
 			<artifactId>mariadb</artifactId>
-			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
