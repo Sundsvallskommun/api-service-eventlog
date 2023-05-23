@@ -19,7 +19,7 @@
 		<published.container.port.production>9730</published.container.port.production>
 		<!-- Service properties -->
 		<testcontainers.version>1.18.1</testcontainers.version>
-		<spring-filter.version>3.0.7</spring-filter.version>
+		<spring-filter.version>3.1.0</spring-filter.version>
 	</properties>
 	<dependencies>
 		<dependency>
