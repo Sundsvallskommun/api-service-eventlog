@@ -8,8 +8,9 @@ import se.sundsvall.eventlog.integration.db.model.EventMetadata;
 
 public class EventMapper {
 
-	public static EventEntity toEventEntity(String logKey, Event event) {
+	private EventMapper() {}
 
+	public static EventEntity toEventEntity(String logKey, Event event) {
 		return EventEntity.create()
 			.withLogKey(logKey)
 			.withType(event.getType().toString())
@@ -24,7 +25,6 @@ public class EventMapper {
 	public static EventMetadata toEventMetadata(Metadata metadata) {
 		return EventMetadata.create().withKey(metadata.getKey()).withValue(metadata.getValue());
 	}
-
 
 	public static Event toEvent(EventEntity eventEntity) {
 		return Event.create()
