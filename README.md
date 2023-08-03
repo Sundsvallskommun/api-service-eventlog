@@ -1,11 +1,6 @@
 # Eventlog
 
-## Leverantör
-
-Sundsvalls kommun
-
 ## Status
-
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Sundsvallskommun_api-service-eventlog&metric=alert_status)](https://sonarcloud.io/summary/overall?id=Sundsvallskommun_api-service-eventlog)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Sundsvallskommun_api-service-eventlog&metric=reliability_rating)](https://sonarcloud.io/summary/overall?id=Sundsvallskommun_api-service-eventlog)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Sundsvallskommun_api-service-eventlog&metric=security_rating)](https://sonarcloud.io/summary/overall?id=Sundsvallskommun_api-service-eventlog)
@@ -15,4 +10,4 @@ Sundsvalls kommun
 
 
 ## 
-Copyright (c) 2021 Sundsvalls kommun
+Copyright (c) 2023 Sundsvalls kommun
