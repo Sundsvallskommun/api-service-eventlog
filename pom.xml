@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>se.sundsvall.dept44</groupId>
 		<artifactId>dept44-service-parent</artifactId>
-		<version>4.0</version>
+		<version>4.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>se.sundsvall</groupId>
@@ -17,7 +17,7 @@
 		<published.container.port.test>9730</published.container.port.test>
 		<published.container.port.production>9730</published.container.port.production>
 		<!-- Service properties -->
-		<spring-filter.version>3.1.6</spring-filter.version>
+		<spring-filter.version>3.1.7</spring-filter.version>
 	</properties>
 	<dependencies>
 		<dependency>
