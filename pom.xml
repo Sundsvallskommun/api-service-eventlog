@@ -12,10 +12,6 @@
 	<version>1.0</version>
 	<name>api-service-eventlog</name>
 	<properties>
-		<!-- Pipeline properties -->
-		<docker.image.name>ms-eventlog</docker.image.name>
-		<published.container.port.test>9730</published.container.port.test>
-		<published.container.port.production>9730</published.container.port.production>
 		<!-- Service properties -->
 		<spring-filter.version>3.1.7</spring-filter.version>
 	</properties>
