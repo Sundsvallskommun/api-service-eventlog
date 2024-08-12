@@ -7,15 +7,12 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.Assertions.within;
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.distinct;
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
-
-import com.turkraft.springfilter.converter.FilterSpecificationConverter;
-import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,8 +27,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
+import com.turkraft.springfilter.converter.FilterSpecificationConverter;
 
-
+import jakarta.transaction.Transactional;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.integration.db.model.EventMetadata;
 
@@ -54,7 +52,6 @@ class EventRepositoryTest {
 
 	@Autowired
 	private FilterSpecificationConverter filterSpecificationConverter;
-
 
 	@Test
 	void create() {
@@ -129,6 +126,7 @@ class EventRepositoryTest {
 	@MethodSource("findByFilterWhereLogKeyIsSetProgramaticallyArguments")
 	void findByFilterWhereLogKeyIsSetProgramatically(final Map<String, String> arguments) {
 
+		final var municipalityId = arguments.get("municipalityId");
 		final var logKey = arguments.get("logKey");
 		final var filter = arguments.get("filter");
 		final var expectedResults = Integer.parseInt(arguments.get("expectedResults"));
@@ -136,30 +134,46 @@ class EventRepositoryTest {
 		final Specification<EventEntity> specification = filterSpecificationConverter.convert(filter);
 		final Pageable pageable = PageRequest.of(0, 20);
 
-		final var entityList = repository.findAll(distinct().and(withLogKey(logKey)).and(specification), pageable);
+		final var entityList = repository.findAll(distinct().and(withLogKey(logKey)).and(withMunicipalityId(municipalityId)).and(specification), pageable);
 
 		assertThat(entityList).isNotNull();
 		assertThat(entityList.getTotalElements()).isEqualTo(expectedResults);
 	}
 
-	private static Stream<Arguments> findByFilterWhereLogKeyIsSetProgramaticallyArguments() throws IOException {
+	private static Stream<Arguments> findByFilterWhereLogKeyIsSetProgramaticallyArguments() {
 		return Stream.of(
 			Arguments.of(Map.of(
+				"municipalityId", "2281",
 				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
 				"filter", "(metadata.key : 'metadata_key_1-1')",
 				"expectedResults", "1")),
 			Arguments.of(Map.of(
+				"municipalityId", "2281",
 				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
 				"filter", "(metadata.value : 'metadata_value_1-2')",
 				"expectedResults", "1")),
 			Arguments.of(Map.of(
 				// Same as first argument, but with an invalid logKey.
+				"municipalityId", "2281",
 				"logKey", "doesnt-exist",
 				"filter", "(metadata.key : 'metadata_key_1-1')",
 				"expectedResults", "0")),
 			Arguments.of(Map.of(
 				// Same as second argument, but with an invalid logKey.
+				"municipalityId", "2281",
 				"logKey", "doesnt-exist",
+				"filter", "(metadata.value : 'metadata_value_1-2')",
+				"expectedResults", "0")),
+			Arguments.of(Map.of(
+				// Same as first argument, but with an invalid municipalityId.
+				"municipalityId", "invalid",
+				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
+				"filter", "(metadata.key : 'metadata_key_1-1')",
+				"expectedResults", "0")),
+			Arguments.of(Map.of(
+				// Same as second argument, but with an invalid municipalityId.
+				"municipalityId", "invalid",
+				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
 				"filter", "(metadata.value : 'metadata_value_1-2')",
 				"expectedResults", "0")));
 	}

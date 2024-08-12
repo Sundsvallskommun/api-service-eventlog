@@ -12,11 +12,9 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       pool-name: eventlog-pool
-    type: com.zaxxer.hikari.HikariDataSource
   flyway:
     enabled: false
   jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
     properties:
       jakarta:
         persistence:

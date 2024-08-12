@@ -1,15 +1,18 @@
 package se.sundsvall.eventlog.api.model;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.format.annotation.DateTimeFormat;
-import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
+import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 
 @Schema(description = "Event model")
 public class Event {
@@ -17,6 +20,9 @@ public class Event {
 	@Schema(implementation = EventType.class, enumAsRef = true)
 	@NotNull
 	private EventType type;
+
+	@Schema(description = "Municipality ID", example = "2281", accessMode = READ_ONLY)
+	private String municipalityId;
 
 	@Schema(description = "Event description", example = "Request saved in database")
 	@NotBlank
@@ -60,6 +66,20 @@ public class Event {
 		this.type = type;
 		return this;
 	}
+
+	public String getMunicipalityId() {
+		return municipalityId;
+	}
+
+	public void setMunicipalityId(String municipalityId) {
+		this.municipalityId = municipalityId;
+	}
+
+	public Event withMunicipalityId(String municipalityId) {
+		this.municipalityId = municipalityId;
+		return this;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -111,6 +131,7 @@ public class Event {
 		this.created = created;
 		return this;
 	}
+
 	public String getHistoryReference() {
 		return historyReference;
 	}
@@ -151,34 +172,23 @@ public class Event {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Event event = (Event) o;
-		return type == event.type && Objects.equals(message, event.message) && Objects.equals(expires, event.expires) && Objects.equals(owner, event.owner) && Objects.equals(created, event.created) && Objects.equals(historyReference, event.historyReference) && Objects.equals(sourceType, event.sourceType) && Objects.equals(metadata, event.metadata);
+	public int hashCode() {
+		return Objects.hash(created, expires, historyReference, message, metadata, municipalityId, owner, sourceType, type);
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(type, message, expires, owner, created, historyReference, sourceType, metadata);
+	public boolean equals(Object obj) {
+		if (this == obj) { return true; }
+		if (!(obj instanceof final Event other)) { return false; }
+		return Objects.equals(created, other.created) && Objects.equals(expires, other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(message, other.message) && Objects.equals(metadata, other.metadata) && Objects
+			.equals(municipalityId, other.municipalityId) && Objects.equals(owner, other.owner) && Objects.equals(sourceType, other.sourceType) && (type == other.type);
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("Event{");
-		sb.append("type=").append(type);
-		sb.append(", message='").append(message).append('\'');
-		sb.append(", expires=").append(expires);
-		sb.append(", owner='").append(owner).append('\'');
-		sb.append(", created=").append(created);
-		sb.append(", historyReference='").append(historyReference).append('\'');
-		sb.append(", sourceType='").append(sourceType).append('\'');
-		sb.append(", metadata=").append(metadata);
-		sb.append('}');
-		return sb.toString();
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Event [type=").append(type).append(", municipalityId=").append(municipalityId).append(", message=").append(message).append(", expires=").append(expires).append(", owner=").append(owner).append(", created=").append(created).append(
+			", historyReference=").append(historyReference).append(", sourceType=").append(sourceType).append(", metadata=").append(metadata).append("]");
+		return builder.toString();
 	}
 }

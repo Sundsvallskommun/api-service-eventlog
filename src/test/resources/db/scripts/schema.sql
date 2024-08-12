@@ -4,6 +4,7 @@
         history_reference varchar(255),
         id varchar(255) not null,
         log_key varchar(255),
+        municipality_id varchar(255),
         owner varchar(255),
         source_type varchar(255),
         type varchar(255),
@@ -17,13 +18,16 @@
         value varchar(255)
     ) engine=InnoDB;
 
-    create index event_log_key_index 
+    create index event_log_key_index
        on event (log_key);
 
-    create index event_metadata_key_index 
+    create index event_municipality_id_index
+       on event (municipality_id);
+
+    create index event_metadata_key_index
        on event_metadata (`key`);
 
-    alter table if exists event_metadata 
-       add constraint fk_event_meta_data 
-       foreign key (event_id) 
+    alter table if exists event_metadata
+       add constraint fk_event_meta_data
+       foreign key (event_id)
        references event (id);

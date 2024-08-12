@@ -1,12 +1,5 @@
 package se.sundsvall.eventlog.api.model;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Random;
-
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
@@ -17,6 +10,13 @@ import static java.time.OffsetDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Random;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 class EventTest {
 
@@ -40,6 +40,7 @@ class EventTest {
 
 		final var eventType = EventType.CREATE;
 		final var message = "message";
+		final var municipalityId = "municipalityId";
 		final var expireDate = OffsetDateTime.now().plusYears(10);
 		final var owner = "owner";
 		final var timestamp = OffsetDateTime.now();
@@ -50,6 +51,7 @@ class EventTest {
 		final var bean = Event.create()
 			.withType(eventType)
 			.withMessage(message)
+			.withMunicipalityId(municipalityId)
 			.withExpires(expireDate)
 			.withOwner(owner)
 			.withCreated(timestamp)
@@ -60,6 +62,7 @@ class EventTest {
 		assertThat(bean).isNotNull().hasNoNullFieldsOrProperties();
 		assertThat(bean.getType()).isEqualTo(eventType);
 		assertThat(bean.getMessage()).isEqualTo(message);
+		assertThat(bean.getMunicipalityId()).isEqualTo(municipalityId);
 		assertThat(bean.getExpires()).isEqualTo(expireDate);
 		assertThat(bean.getOwner()).isEqualTo(owner);
 		assertThat(bean.getCreated()).isEqualTo(timestamp);

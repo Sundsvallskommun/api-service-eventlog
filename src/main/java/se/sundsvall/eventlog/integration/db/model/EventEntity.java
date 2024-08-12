@@ -28,7 +28,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "event",
 	indexes = {
-		@Index(name = "event_log_key_index", columnList = "log_key")
+		@Index(name = "event_log_key_index", columnList = "log_key"),
+		@Index(name = "event_municipality_id_index", columnList = "municipality_id")
 	})
 public class EventEntity {
 
@@ -36,6 +37,9 @@ public class EventEntity {
 	@UuidGenerator
 	@Column(name = "id")
 	private String id;
+
+	@Column(name = "municipality_id")
+	private String municipalityId;
 
 	@Column(name = "log_key")
 	private String logKey;
@@ -85,6 +89,19 @@ public class EventEntity {
 
 	public EventEntity withId(final String id) {
 		this.id = id;
+		return this;
+	}
+
+	public String getMunicipalityId() {
+		return municipalityId;
+	}
+
+	public void setMunicipalityId(String municipalityId) {
+		this.municipalityId = municipalityId;
+	}
+
+	public EventEntity withMunicipalityId(String municipalityId) {
+		this.municipalityId = municipalityId;
 		return this;
 	}
 
@@ -212,26 +229,22 @@ public class EventEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(created, expires, historyReference, id, logKey, message, metadata, owner, sourceType, type);
+		return Objects.hash(created, expires, historyReference, id, logKey, message, metadata, municipalityId, owner, sourceType, type);
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof final EventEntity other)) {
-			return false;
-		}
+	public boolean equals(Object obj) {
+		if (this == obj) { return true; }
+		if (!(obj instanceof final EventEntity other)) { return false; }
 		return Objects.equals(created, other.created) && Objects.equals(expires, other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(id, other.id) && Objects.equals(logKey, other.logKey) && Objects.equals(message,
-			other.message) && Objects.equals(metadata, other.metadata) && Objects.equals(owner, other.owner) && Objects.equals(sourceType, other.sourceType) && Objects.equals(type, other.type);
+			other.message) && Objects.equals(metadata, other.metadata) && Objects.equals(municipalityId, other.municipalityId) && Objects.equals(owner, other.owner) && Objects.equals(sourceType, other.sourceType) && Objects.equals(type, other.type);
 	}
 
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("EventEntity [id=").append(id).append(", logKey=").append(logKey).append(", type=").append(type).append(", owner=").append(owner).append(", sourceType=").append(sourceType).append(", message=").append(message).append(
-			", historyReference=").append(historyReference).append(", created=").append(created).append(", expires=").append(expires).append(", metadata=").append(metadata).append("]");
+		builder.append("EventEntity [id=").append(id).append(", municipalityId=").append(municipalityId).append(", logKey=").append(logKey).append(", type=").append(type).append(", owner=").append(owner).append(", sourceType=").append(sourceType).append(
+			", message=").append(message).append(", historyReference=").append(historyReference).append(", created=").append(created).append(", expires=").append(expires).append(", metadata=").append(metadata).append("]");
 		return builder.toString();
 	}
 }
