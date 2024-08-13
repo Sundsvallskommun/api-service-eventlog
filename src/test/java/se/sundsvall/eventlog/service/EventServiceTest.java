@@ -6,7 +6,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static se.sundsvall.eventlog.service.EventService.logKeyFilter;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
 
 import java.util.stream.Stream;
 
@@ -31,6 +32,7 @@ import se.sundsvall.eventlog.service.mapper.EventMapper;
 @ExtendWith(MockitoExtension.class)
 class EventServiceTest {
 
+	private static final String MUNICIPALITY_ID = "municipalityId";
 	private static final String LOG_KEY = "logKey";
 
 	@Mock
@@ -44,6 +46,7 @@ class EventServiceTest {
 
 	@Mock
 	private Pageable pageableMock;
+
 	@Captor
 	private ArgumentCaptor<Specification<EventEntity>> specificationArgumentCaptor;
 
@@ -59,11 +62,11 @@ class EventServiceTest {
 	@Test
 	void createEvent() {
 		try (MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
-			mapper.when(() -> EventMapper.toEventEntity(any(), any())).thenReturn(eventEntityMock);
+			mapper.when(() -> EventMapper.toEventEntity(any(), any(), any())).thenReturn(eventEntityMock);
 
-			eventService.createEvent(LOG_KEY, eventMock);
+			eventService.createEvent(MUNICIPALITY_ID, LOG_KEY, eventMock);
 
-			mapper.verify(() -> EventMapper.toEventEntity(eq(LOG_KEY), same(eventMock)));
+			mapper.verify(() -> EventMapper.toEventEntity(eq(MUNICIPALITY_ID), eq(LOG_KEY), same(eventMock)));
 			verify(eventRepositoryMock).save(same(eventEntityMock));
 		}
 	}
@@ -74,13 +77,13 @@ class EventServiceTest {
 		when(eventRepositoryMock.findAll(Mockito.<Specification<EventEntity>>any(), any(Pageable.class))).thenReturn(eventEntityPageMock);
 		when(eventEntityPageMock.stream()).thenReturn(Stream.of(eventEntityMock));
 
-		try(MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
+		try (MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
 			mapper.when(() -> EventMapper.toEvent(any())).thenReturn(eventMock);
 
-			final var result = eventService.findEvents(LOG_KEY, specificationMock, pageableMock);
+			final var result = eventService.findEvents(MUNICIPALITY_ID, LOG_KEY, specificationMock, pageableMock);
 
 			verify(eventRepositoryMock).findAll(specificationArgumentCaptor.capture(), same(pageableMock));
-			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(logKeyFilter(LOG_KEY).and(specificationMock));
+			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(withMunicipalityId(MUNICIPALITY_ID).and(withLogKey(LOG_KEY)).and(specificationMock));
 			mapper.verify(() -> EventMapper.toEvent(same(eventEntityMock)));
 
 			assertThat(result.getSize()).isEqualTo(1);

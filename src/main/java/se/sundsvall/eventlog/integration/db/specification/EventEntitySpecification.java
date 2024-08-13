@@ -19,13 +19,17 @@ public interface EventEntitySpecification {
 		return buildEqualFilter("logKey", logKey);
 	}
 
+	static Specification<EventEntity> withMunicipalityId(final String municipalityId) {
+		return buildEqualFilter("municipalityId", municipalityId);
+	}
+
 	/**
 	 * Method builds an equal filter if value is not null. If value is null, method returns
 	 * an always-true predicate (meaning no filtering will be applied for sent in attribute)
 	 *
-	 * @param attribute name that will be used in filter
-	 * @param value     value (or null) to compare against
-	 * @return Specification<T> matching sent in comparison
+	 * @param  attribute name that will be used in filter
+	 * @param  value     value (or null) to compare against
+	 * @return           Specification<T> matching sent in comparison
 	 */
 	static Specification<EventEntity> buildEqualFilter(final String attribute, final Object value) {
 		return (entity, cq, cb) -> nonNull(value) ? cb.equal(entity.get(attribute), value) : cb.and();

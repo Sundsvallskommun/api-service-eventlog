@@ -1,36 +1,37 @@
 package se.sundsvall.eventlog.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
+import static se.sundsvall.eventlog.service.mapper.EventMapper.toEventEntity;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.integration.db.EventRepository;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.service.mapper.EventMapper;
 
-import static se.sundsvall.eventlog.service.mapper.EventMapper.toEventEntity;
-
 @Service
 public class EventService {
 
-	@Autowired
-	private EventRepository eventRepository;
+	private final EventRepository eventRepository;
 
-	public void createEvent(String logKey, Event event) {
-		eventRepository.save(toEventEntity(logKey, event));
+	public EventService(EventRepository eventRepository) {
+		this.eventRepository = eventRepository;
 	}
 
-	public Page<Event> findEvents(String logKey, Specification<EventEntity> filter, Pageable pageable) {
-		var fullFilter = logKeyFilter(logKey).and(filter);
-		var matches = eventRepository.findAll(fullFilter, pageable);
+	public void createEvent(String municipalityId, String logKey, Event event) {
+		eventRepository.save(toEventEntity(municipalityId, logKey, event));
+	}
+
+	public Page<Event> findEvents(String municipalityId, String logKey, Specification<EventEntity> filter, Pageable pageable) {
+		final var fullFilter = withMunicipalityId(municipalityId).and(withLogKey(logKey)).and(filter);
+		final var matches = eventRepository.findAll(fullFilter, pageable);
 
 		return new PageImpl<>(matches.stream().map(EventMapper::toEvent).toList(), pageable, eventRepository.count(fullFilter));
-	}
-
-	protected static Specification<EventEntity> logKeyFilter(String logKey) {
-		return (root, cq, cb) -> cb.equal(root.get("logKey"), logKey);
 	}
 }

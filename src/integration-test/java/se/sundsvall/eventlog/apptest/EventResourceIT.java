@@ -24,6 +24,8 @@ import se.sundsvall.eventlog.Application;
 })
 class EventResourceIT extends AbstractAppTest {
 
+	private static final String PATH = "/2281/";
+	private static final String PATH_WITH_WRONG_MUNICIPALITY_ID = "/1984/";
 	private static final String LOG_KEY = "f0882f1d-06bc-47fd-b017-1d8307f5ce95";
 	private static final String REQUEST_FILE = "request.json";
 	private static final String RESPONSE_FILE = "response.json";
@@ -31,7 +33,7 @@ class EventResourceIT extends AbstractAppTest {
 	@Test
 	void test01_createEvent() {
 		setupCall()
-			.withServicePath("/" + LOG_KEY)
+			.withServicePath(PATH + LOG_KEY)
 			.withHttpMethod(POST)
 			.withRequest(REQUEST_FILE)
 			.withExpectedResponseStatus(ACCEPTED)
@@ -41,7 +43,7 @@ class EventResourceIT extends AbstractAppTest {
 	@Test
 	void test02_getAllEvents() {
 		setupCall()
-			.withServicePath("/1d968db4-1ced-4144-a167-357862774116")
+			.withServicePath(PATH + "1d968db4-1ced-4144-a167-357862774116")
 			.withHttpMethod(GET)
 			.withHeader(ACCEPT, APPLICATION_JSON_VALUE)
 			.withExpectedResponseStatus(OK)
@@ -53,7 +55,19 @@ class EventResourceIT extends AbstractAppTest {
 	@Test
 	void test03_getFilteredEvents() {
 		setupCall()
-			.withServicePath("/1d968db4-1ced-4144-a167-357862774116?filter=metadata.key:'metadata_key_message-1_logkey-1' and metadata.value:'metadata_value_message-1_logkey-1'")
+			.withServicePath(PATH + "1d968db4-1ced-4144-a167-357862774116?filter=metadata.key:'metadata_key_message-1_logkey-1' and metadata.value:'metadata_value_message-1_logkey-1'")
+			.withHttpMethod(GET)
+			.withHeader(ACCEPT, APPLICATION_JSON_VALUE)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponseHeader(CONTENT_TYPE, List.of(APPLICATION_JSON_VALUE))
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test04_getFilteredEventsWrongMunicipalityId() {
+		setupCall()
+			.withServicePath(PATH_WITH_WRONG_MUNICIPALITY_ID + "1d968db4-1ced-4144-a167-357862774116?filter=metadata.key:'metadata_key_message-1_logkey-1' and metadata.value:'metadata_value_message-1_logkey-1'")
 			.withHttpMethod(GET)
 			.withHeader(ACCEPT, APPLICATION_JSON_VALUE)
 			.withExpectedResponseStatus(OK)

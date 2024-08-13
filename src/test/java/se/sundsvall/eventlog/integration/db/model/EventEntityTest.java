@@ -43,6 +43,7 @@ class EventEntityTest {
 		final var expires = now();
 		final var historyReference = "historyReference";
 		final var id = UUID.randomUUID().toString();
+		final var municipalityId = "municipalityId";
 		final var logKey = UUID.randomUUID().toString();
 		final var message = "message";
 		final var metadata = List.of(EventMetadata.create());
@@ -55,6 +56,7 @@ class EventEntityTest {
 			.withExpires(expires)
 			.withHistoryReference(historyReference)
 			.withId(id)
+			.withMunicipalityId(municipalityId)
 			.withLogKey(logKey)
 			.withMessage(message)
 			.withMetadata(metadata)
@@ -67,6 +69,7 @@ class EventEntityTest {
 		assertThat(entity.getExpires()).isEqualTo(expires);
 		assertThat(entity.getHistoryReference()).isEqualTo(historyReference);
 		assertThat(entity.getId()).isEqualTo(id);
+		assertThat(entity.getMunicipalityId()).isEqualTo(municipalityId);
 		assertThat(entity.getLogKey()).isEqualTo(logKey);
 		assertThat(entity.getMessage()).isEqualTo(message);
 		assertThat(entity.getMetadata()).isEqualTo(metadata);

@@ -1,5 +1,8 @@
 package se.sundsvall.eventlog.api;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -11,6 +14,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -18,40 +23,58 @@ import se.sundsvall.eventlog.Application;
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.api.model.EventType;
 import se.sundsvall.eventlog.api.model.Metadata;
+import se.sundsvall.eventlog.service.EventService;
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("junit")
 class EventResourceTest {
 
-	private static final String PATH = "/{logKey}";
+	private static final String PATH = "/{municipalityId}/{logKey}";
 
 	@Autowired
 	private WebTestClient webTestClient;
 
+	@MockBean
+	private EventService eventServiceMock;
+
 	@Test
-	void postEvent() {
+	void createEvent() {
+
+		// Arrange
+		final var municipalityId = "2281";
+		final var logKey = UUID.randomUUID().toString();
+		final var event = makeEvent();
+
+		// Act
 		webTestClient.post()
-			.uri(builder -> builder.path(PATH).build(Map.of("logKey", UUID.randomUUID().toString())))
+			.uri(builder -> builder.path(PATH).build(Map.of("municipalityId", municipalityId, "logKey", logKey)))
 			.contentType(APPLICATION_JSON)
-			.bodyValue(createEvent())
+			.bodyValue(event)
 			.exchange()
 			.expectStatus().isAccepted()
 			.expectBody().isEmpty();
 
-		// TODO add assertions on mocks
+		// Assert
+		verify(eventServiceMock).createEvent(municipalityId, logKey, event);
 	}
 
 	@Test
-	void getEvent() {
+	void getEvents() {
+
+		// Arrange
+		final var municipalityId = "2281";
+		final var logKey = UUID.randomUUID().toString();
+
+		// Act
 		webTestClient.get()
-			.uri(builder -> builder.path(PATH).build(Map.of("logKey", UUID.randomUUID().toString())))
+			.uri(builder -> builder.path(PATH).build(Map.of("municipalityId", municipalityId, "logKey", logKey)))
 			.exchange()
 			.expectStatus().isOk();
 
-		// TODO extend when implemented
+		verify(eventServiceMock).findEvents(eq(municipalityId), eq(logKey), any(), eq(Pageable.ofSize(20)));
 	}
 
-	private Event createEvent() {
+	private Event makeEvent() {
 		return Event.create()
 			.withType(EventType.CREATE)
 			.withMessage("Message")

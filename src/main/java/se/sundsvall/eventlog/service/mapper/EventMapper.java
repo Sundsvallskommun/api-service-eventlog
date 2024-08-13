@@ -10,11 +10,12 @@ public class EventMapper {
 
 	private EventMapper() {}
 
-	public static EventEntity toEventEntity(String logKey, Event event) {
+	public static EventEntity toEventEntity(String municipalityId, String logKey, Event event) {
 		return EventEntity.create()
 			.withLogKey(logKey)
 			.withType(event.getType().toString())
 			.withMessage(event.getMessage())
+			.withMunicipalityId(municipalityId)
 			.withExpires(event.getExpires())
 			.withOwner(event.getOwner())
 			.withHistoryReference(event.getHistoryReference())
@@ -30,6 +31,7 @@ public class EventMapper {
 		return Event.create()
 			.withType(EventType.valueOf(eventEntity.getType()))
 			.withMessage(eventEntity.getMessage())
+			.withMunicipalityId(eventEntity.getMunicipalityId())
 			.withExpires(eventEntity.getExpires())
 			.withOwner(eventEntity.getOwner())
 			.withCreated(eventEntity.getCreated())
