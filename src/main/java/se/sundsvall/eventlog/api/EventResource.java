@@ -1,5 +1,6 @@
 package se.sundsvall.eventlog.api;
 
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
@@ -61,7 +62,9 @@ public class EventResource {
 		@Valid @NotNull @RequestBody final Event event) {
 
 		eventService.createEvent(municipalityId, logKey, event);
-		return accepted().build();
+		return accepted()
+			.header(CONTENT_TYPE, ALL_VALUE)
+			.build();
 	}
 
 	@GetMapping(produces = { APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE })
