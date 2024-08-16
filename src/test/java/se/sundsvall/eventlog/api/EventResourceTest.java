@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import java.time.OffsetDateTime;
@@ -52,6 +53,7 @@ class EventResourceTest {
 			.bodyValue(event)
 			.exchange()
 			.expectStatus().isAccepted()
+			.expectHeader().contentType(ALL_VALUE)
 			.expectBody().isEmpty();
 
 		// Assert
