@@ -10,7 +10,6 @@ import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpec
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
 
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -23,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.integration.db.EventRepository;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;

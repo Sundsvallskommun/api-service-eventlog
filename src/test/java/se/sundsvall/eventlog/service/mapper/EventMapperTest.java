@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
-
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.api.model.EventType;
 import se.sundsvall.eventlog.api.model.Metadata;

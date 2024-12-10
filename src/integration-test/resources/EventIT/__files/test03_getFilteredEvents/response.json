@@ -21,20 +21,24 @@
 		"sorted": false,
 		"empty": true
 	},
-	"content": [{
-		"owner": "owner_1",
-		"municipalityId": "2281",
-		"expires": "2035-05-09T12:00:00+02:00",
-		"metadata": [{
-			"value": "metadata_value_message-1_logkey-1",
-			"key": "metadata_key_message-1_logkey-1"
-		}],
-		"historyReference": "e608841a-7045-40a3-b1c8-7f3a076a0caa",
-		"sourceType": "source_type_1",
-		"created": "2023-05-08T08:00:00+02:00",
-		"type": "CREATE",
-		"message": "message 1 logkey 1"
-	}],
+	"content": [
+		{
+			"owner": "owner_1",
+			"municipalityId": "2281",
+			"expires": "2035-05-09T12:00:00+02:00",
+			"metadata": [
+				{
+					"value": "metadata_value_message-1_logkey-1",
+					"key": "metadata_key_message-1_logkey-1"
+				}
+			],
+			"historyReference": "e608841a-7045-40a3-b1c8-7f3a076a0caa",
+			"sourceType": "source_type_1",
+			"created": "2023-05-08T08:00:00+02:00",
+			"type": "CREATE",
+			"message": "message 1 logkey 1"
+		}
+	],
 	"first": true,
 	"totalElements": 1,
 	"empty": false
