@@ -37,7 +37,7 @@ class EventResourceFailuresTest {
 	@Autowired
 	private WebTestClient webTestClient;
 
-	@MockBean
+	@MockitoBean
 	private EventService eventServiceMock;
 
 	@Test
