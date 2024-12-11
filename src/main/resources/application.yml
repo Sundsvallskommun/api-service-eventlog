@@ -1,6 +1,13 @@
 logging:
   level:
     root: INFO
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
 openapi:
   name: ${spring.application.name}
   title: ${spring.application.name}
@@ -16,8 +23,11 @@ spring:
     enabled: false
   jpa:
     properties:
+      hibernate:
+        format_sql: true
       jakarta:
         persistence:
           schema-generation:
             database:
               action: none
+    show-sql: true

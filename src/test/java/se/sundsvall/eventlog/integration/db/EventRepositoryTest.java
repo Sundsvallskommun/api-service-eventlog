@@ -33,7 +33,9 @@ import se.sundsvall.eventlog.integration.db.model.EventMetadata;
 /**
  * Event repository tests.
  *
- * @see /src/test/resources/db/scripts/testdata-junit.sql for data setup.
+ * @see <a href=
+ *      "/src/test/resources/db/scripts/testdata-junit.sql">/src/test/resources/db/scripts/testdata-junit.sql</a> for
+ *      data setup.
  */
 @SpringBootTest
 @ActiveProfiles("junit")
@@ -50,13 +52,50 @@ class EventRepositoryTest {
 	@Autowired
 	private FilterSpecificationConverter filterSpecificationConverter;
 
+	private static Stream<Arguments> findByFilterWhereLogKeyIsSetProgramaticallyArguments() {
+		return Stream.of(
+			Arguments.of(Map.of(
+				"municipalityId", "2281",
+				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
+				"filter", "(metadata.key : 'metadata_key_1-1')",
+				"expectedResults", "1")),
+			Arguments.of(Map.of(
+				"municipalityId", "2281",
+				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
+				"filter", "(metadata.value : 'metadata_value_1-2')",
+				"expectedResults", "1")),
+			Arguments.of(Map.of(
+				// Same as first argument, but with an invalid logKey.
+				"municipalityId", "2281",
+				"logKey", "doesnt-exist",
+				"filter", "(metadata.key : 'metadata_key_1-1')",
+				"expectedResults", "0")),
+			Arguments.of(Map.of(
+				// Same as second argument, but with an invalid logKey.
+				"municipalityId", "2281",
+				"logKey", "doesnt-exist",
+				"filter", "(metadata.value : 'metadata_value_1-2')",
+				"expectedResults", "0")),
+			Arguments.of(Map.of(
+				// Same as first argument, but with an invalid municipalityId.
+				"municipalityId", "invalid",
+				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
+				"filter", "(metadata.key : 'metadata_key_1-1')",
+				"expectedResults", "0")),
+			Arguments.of(Map.of(
+				// Same as second argument, but with an invalid municipalityId.
+				"municipalityId", "invalid",
+				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
+				"filter", "(metadata.value : 'metadata_value_1-2')",
+				"expectedResults", "0")));
+	}
+
 	@Test
 	void create() {
 
 		// Arrange
 		final var expires = now().plusYears(10);
 		final var historyReference = UUID.randomUUID().toString();
-		final var id = UUID.randomUUID().toString();
 		final var logKey = UUID.randomUUID().toString();
 		final var message = "message";
 		final var metadata = List.of(
@@ -69,7 +108,6 @@ class EventRepositoryTest {
 		final var entity = EventEntity.create()
 			.withExpires(expires)
 			.withHistoryReference(historyReference)
-			.withId(id)
 			.withLogKey(logKey)
 			.withMessage(message)
 			.withMetadata(metadata)
@@ -135,44 +173,6 @@ class EventRepositoryTest {
 
 		assertThat(entityList).isNotNull();
 		assertThat(entityList.getTotalElements()).isEqualTo(expectedResults);
-	}
-
-	private static Stream<Arguments> findByFilterWhereLogKeyIsSetProgramaticallyArguments() {
-		return Stream.of(
-			Arguments.of(Map.of(
-				"municipalityId", "2281",
-				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
-				"filter", "(metadata.key : 'metadata_key_1-1')",
-				"expectedResults", "1")),
-			Arguments.of(Map.of(
-				"municipalityId", "2281",
-				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
-				"filter", "(metadata.value : 'metadata_value_1-2')",
-				"expectedResults", "1")),
-			Arguments.of(Map.of(
-				// Same as first argument, but with an invalid logKey.
-				"municipalityId", "2281",
-				"logKey", "doesnt-exist",
-				"filter", "(metadata.key : 'metadata_key_1-1')",
-				"expectedResults", "0")),
-			Arguments.of(Map.of(
-				// Same as second argument, but with an invalid logKey.
-				"municipalityId", "2281",
-				"logKey", "doesnt-exist",
-				"filter", "(metadata.value : 'metadata_value_1-2')",
-				"expectedResults", "0")),
-			Arguments.of(Map.of(
-				// Same as first argument, but with an invalid municipalityId.
-				"municipalityId", "invalid",
-				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
-				"filter", "(metadata.key : 'metadata_key_1-1')",
-				"expectedResults", "0")),
-			Arguments.of(Map.of(
-				// Same as second argument, but with an invalid municipalityId.
-				"municipalityId", "invalid",
-				"logKey", "b1f4e8cf-7e61-4e87-b3c4-ffb443929553",
-				"filter", "(metadata.value : 'metadata_value_1-2')",
-				"expectedResults", "0")));
 	}
 
 	private boolean isValidUUID(final String value) {
