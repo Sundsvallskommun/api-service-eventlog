@@ -59,7 +59,7 @@ class EventServiceTest {
 
 	@Test
 	void createEvent() {
-		try (MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
+		try (final MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
 			mapper.when(() -> EventMapper.toEventEntity(any(), any(), any())).thenReturn(eventEntityMock);
 
 			eventService.createEvent(MUNICIPALITY_ID, LOG_KEY, eventMock);
@@ -75,13 +75,32 @@ class EventServiceTest {
 		when(eventRepositoryMock.findAll(Mockito.<Specification<EventEntity>>any(), any(Pageable.class))).thenReturn(eventEntityPageMock);
 		when(eventEntityPageMock.stream()).thenReturn(Stream.of(eventEntityMock));
 
-		try (MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
+		try (final MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
 			mapper.when(() -> EventMapper.toEvent(any())).thenReturn(eventMock);
 
 			final var result = eventService.findEvents(MUNICIPALITY_ID, LOG_KEY, specificationMock, pageableMock);
 
 			verify(eventRepositoryMock).findAll(specificationArgumentCaptor.capture(), same(pageableMock));
 			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(withMunicipalityId(MUNICIPALITY_ID).and(withLogKey(LOG_KEY)).and(specificationMock));
+			mapper.verify(() -> EventMapper.toEvent(same(eventEntityMock)));
+
+			assertThat(result.getSize()).isEqualTo(1);
+			assertThat(result).containsExactly(eventMock);
+		}
+	}
+
+	@Test
+	void findEventsWithNullLogKey() {
+		when(eventRepositoryMock.findAll(Mockito.<Specification<EventEntity>>any(), any(Pageable.class))).thenReturn(eventEntityPageMock);
+		when(eventEntityPageMock.stream()).thenReturn(Stream.of(eventEntityMock));
+
+		try (final MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
+			mapper.when(() -> EventMapper.toEvent(any())).thenReturn(eventMock);
+
+			final var result = eventService.findEvents(MUNICIPALITY_ID, null, specificationMock, pageableMock);
+
+			verify(eventRepositoryMock).findAll(specificationArgumentCaptor.capture(), same(pageableMock));
+			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(withMunicipalityId(MUNICIPALITY_ID).and(specificationMock));
 			mapper.verify(() -> EventMapper.toEvent(same(eventEntityMock)));
 
 			assertThat(result.getSize()).isEqualTo(1);

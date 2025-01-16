@@ -10,7 +10,7 @@ public class EventMapper {
 
 	private EventMapper() {}
 
-	public static EventEntity toEventEntity(String municipalityId, String logKey, Event event) {
+	public static EventEntity toEventEntity(final String municipalityId, final String logKey, final Event event) {
 		return EventEntity.create()
 			.withLogKey(logKey)
 			.withType(event.getType().toString())
@@ -23,12 +23,13 @@ public class EventMapper {
 			.withMetadata(event.getMetadata().stream().map(EventMapper::toEventMetadata).toList());
 	}
 
-	public static EventMetadata toEventMetadata(Metadata metadata) {
+	public static EventMetadata toEventMetadata(final Metadata metadata) {
 		return EventMetadata.create().withKey(metadata.getKey()).withValue(metadata.getValue());
 	}
 
-	public static Event toEvent(EventEntity eventEntity) {
+	public static Event toEvent(final EventEntity eventEntity) {
 		return Event.create()
+			.withLogKey(eventEntity.getLogKey())
 			.withType(EventType.valueOf(eventEntity.getType()))
 			.withMessage(eventEntity.getMessage())
 			.withMunicipalityId(eventEntity.getMunicipalityId())
@@ -40,7 +41,7 @@ public class EventMapper {
 			.withMetadata(eventEntity.getMetadata().stream().map(EventMapper::toMetadata).toList());
 	}
 
-	public static Metadata toMetadata(EventMetadata eventMetadata) {
+	public static Metadata toMetadata(final EventMetadata eventMetadata) {
 		return Metadata.create().withKey(eventMetadata.getKey()).withValue(eventMetadata.getValue());
 	}
 }

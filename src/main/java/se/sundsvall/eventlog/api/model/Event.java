@@ -15,6 +15,9 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 @Schema(description = "Event model")
 public class Event {
 
+	@Schema(description = "Unique identifier", example = "fbe2fb67-005c-4f26-990f-1c95b5f6933e", accessMode = READ_ONLY)
+	private String logKey;
+
 	@Schema(implementation = EventType.class, enumAsRef = true)
 	@NotNull
 	private EventType type;
@@ -52,15 +55,28 @@ public class Event {
 		return new Event();
 	}
 
+	public String getLogKey() {
+		return logKey;
+	}
+
+	public void setLogKey(final String logKey) {
+		this.logKey = logKey;
+	}
+
+	public Event withLogKey(final String logKey) {
+		this.logKey = logKey;
+		return this;
+	}
+
 	public EventType getType() {
 		return type;
 	}
 
-	public void setType(EventType type) {
+	public void setType(final EventType type) {
 		this.type = type;
 	}
 
-	public Event withType(EventType type) {
+	public Event withType(final EventType type) {
 		this.type = type;
 		return this;
 	}
@@ -69,11 +85,11 @@ public class Event {
 		return municipalityId;
 	}
 
-	public void setMunicipalityId(String municipalityId) {
+	public void setMunicipalityId(final String municipalityId) {
 		this.municipalityId = municipalityId;
 	}
 
-	public Event withMunicipalityId(String municipalityId) {
+	public Event withMunicipalityId(final String municipalityId) {
 		this.municipalityId = municipalityId;
 		return this;
 	}
@@ -82,11 +98,11 @@ public class Event {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 
-	public Event withMessage(String message) {
+	public Event withMessage(final String message) {
 		this.message = message;
 		return this;
 	}
@@ -95,11 +111,11 @@ public class Event {
 		return expires;
 	}
 
-	public void setExpires(OffsetDateTime expires) {
+	public void setExpires(final OffsetDateTime expires) {
 		this.expires = expires;
 	}
 
-	public Event withExpires(OffsetDateTime expires) {
+	public Event withExpires(final OffsetDateTime expires) {
 		this.expires = expires;
 		return this;
 	}
@@ -108,11 +124,11 @@ public class Event {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
+	public void setOwner(final String owner) {
 		this.owner = owner;
 	}
 
-	public Event withOwner(String owner) {
+	public Event withOwner(final String owner) {
 		this.owner = owner;
 		return this;
 	}
@@ -121,11 +137,11 @@ public class Event {
 		return created;
 	}
 
-	public void setCreated(OffsetDateTime created) {
+	public void setCreated(final OffsetDateTime created) {
 		this.created = created;
 	}
 
-	public Event withCreated(OffsetDateTime created) {
+	public Event withCreated(final OffsetDateTime created) {
 		this.created = created;
 		return this;
 	}
@@ -134,11 +150,11 @@ public class Event {
 		return historyReference;
 	}
 
-	public void setHistoryReference(String historyReference) {
+	public void setHistoryReference(final String historyReference) {
 		this.historyReference = historyReference;
 	}
 
-	public Event withHistoryReference(String historyReference) {
+	public Event withHistoryReference(final String historyReference) {
 		this.historyReference = historyReference;
 		return this;
 	}
@@ -147,11 +163,11 @@ public class Event {
 		return sourceType;
 	}
 
-	public void setSourceType(String sourceType) {
+	public void setSourceType(final String sourceType) {
 		this.sourceType = sourceType;
 	}
 
-	public Event withSourceType(String sourceType) {
+	public Event withSourceType(final String sourceType) {
 		this.sourceType = sourceType;
 		return this;
 	}
@@ -160,33 +176,43 @@ public class Event {
 		return metadata;
 	}
 
-	public void setMetadata(List<Metadata> metadata) {
+	public void setMetadata(final List<Metadata> metadata) {
 		this.metadata = metadata;
 	}
 
-	public Event withMetadata(List<Metadata> metadata) {
+	public Event withMetadata(final List<Metadata> metadata) {
 		this.metadata = metadata;
 		return this;
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(created, expires, historyReference, message, metadata, municipalityId, owner, sourceType, type);
+	public boolean equals(final Object o) {
+		if (o == null || getClass() != o.getClass())
+			return false;
+		final Event event = (Event) o;
+		return Objects.equals(logKey, event.logKey) && type == event.type && Objects.equals(municipalityId, event.municipalityId) && Objects.equals(message, event.message) && Objects.equals(expires, event.expires)
+			&& Objects.equals(owner, event.owner) && Objects.equals(created, event.created) && Objects.equals(historyReference, event.historyReference) && Objects.equals(sourceType, event.sourceType)
+			&& Objects.equals(metadata, event.metadata);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) { return true; }
-		if (!(obj instanceof final Event other)) { return false; }
-		return Objects.equals(created, other.created) && Objects.equals(expires, other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(message, other.message) && Objects.equals(metadata, other.metadata) && Objects
-			.equals(municipalityId, other.municipalityId) && Objects.equals(owner, other.owner) && Objects.equals(sourceType, other.sourceType) && (type == other.type);
+	public int hashCode() {
+		return Objects.hash(logKey, type, municipalityId, message, expires, owner, created, historyReference, sourceType, metadata);
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("Event [type=").append(type).append(", municipalityId=").append(municipalityId).append(", message=").append(message).append(", expires=").append(expires).append(", owner=").append(owner).append(", created=").append(created).append(
-			", historyReference=").append(historyReference).append(", sourceType=").append(sourceType).append(", metadata=").append(metadata).append("]");
-		return builder.toString();
+		return "Event{" +
+			"logKey='" + logKey + '\'' +
+			", type=" + type +
+			", municipalityId='" + municipalityId + '\'' +
+			", message='" + message + '\'' +
+			", expires=" + expires +
+			", owner='" + owner + '\'' +
+			", created=" + created +
+			", historyReference='" + historyReference + '\'' +
+			", sourceType='" + sourceType + '\'' +
+			", metadata=" + metadata +
+			'}';
 	}
 }

@@ -33,6 +33,23 @@
 					"value": "metadata_value_message-1_logkey-1"
 				}
 			]
+		},
+		{
+			"logKey": "836fcf4f-d24e-42a4-9a8f-170b75dfc158",
+			"type": "UPDATE",
+			"municipalityId": "2281",
+			"message": "message 1 logkey 2",
+			"expires": "2035-05-09T14:00:00+02:00",
+			"owner": "owner_2",
+			"created": "2023-04-08T10:00:00+02:00",
+			"historyReference": "eda8a6bd-a0ca-4fb3-9d6a-fecdda4cb105",
+			"sourceType": "source_type_3",
+			"metadata": [
+				{
+					"key": "metadata_key_message-1_logkey-2",
+					"value": "metadata_value_message-1_logkey-2"
+				}
+			]
 		}
 	],
 	"pageable": {
@@ -49,7 +66,7 @@
 	},
 	"last": true,
 	"totalPages": 1,
-	"totalElements": 2,
+	"totalElements": 3,
 	"first": true,
 	"size": 20,
 	"number": 0,
@@ -58,6 +75,6 @@
 		"sorted": false,
 		"unsorted": true
 	},
-	"numberOfElements": 2,
+	"numberOfElements": 3,
 	"empty": false
 }

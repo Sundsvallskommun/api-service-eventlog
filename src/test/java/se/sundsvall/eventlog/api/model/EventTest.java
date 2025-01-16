@@ -37,6 +37,7 @@ class EventTest {
 	@Test
 	void testBuilderMethods() {
 
+		final var logKey = "logKey";
 		final var eventType = EventType.CREATE;
 		final var message = "message";
 		final var municipalityId = "municipalityId";
@@ -48,6 +49,7 @@ class EventTest {
 		final var metadata = Metadata.create().withKey("key").withValue("value");
 
 		final var bean = Event.create()
+			.withLogKey(logKey)
 			.withType(eventType)
 			.withMessage(message)
 			.withMunicipalityId(municipalityId)
@@ -59,6 +61,7 @@ class EventTest {
 			.withMetadata(List.of(metadata));
 
 		assertThat(bean).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(bean.getLogKey()).isEqualTo(logKey);
 		assertThat(bean.getType()).isEqualTo(eventType);
 		assertThat(bean.getMessage()).isEqualTo(message);
 		assertThat(bean.getMunicipalityId()).isEqualTo(municipalityId);
