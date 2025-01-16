@@ -67,6 +67,7 @@ class EventMapperTest {
 
 		final var event = EventMapper.toEvent(eventEntity);
 
+		assertThat(event.getLogKey()).isEqualTo(LOG_KEY);
 		assertThat(event.getType()).isEqualTo(EVENT_TYPE);
 		assertThat(event.getMessage()).isEqualTo(MESSAGE);
 		assertThat(event.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
