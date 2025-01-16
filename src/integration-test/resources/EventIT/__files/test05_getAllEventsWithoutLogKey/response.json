@@ -1,0 +1,77 @@
+{
+	"content": [
+		{
+			"type": "DELETE",
+			"municipalityId": "2281",
+			"message": "message 2 logkey 1",
+			"expires": "2035-05-09T13:00:00+02:00",
+			"owner": "owner_1",
+			"created": "2023-05-08T09:00:00+02:00",
+			"historyReference": "29ed393a-d315-47b7-89a2-eca74a8166a7",
+			"sourceType": "source_type_2",
+			"metadata": [
+				{
+					"key": "metadata_key_message-2_logkey-1",
+					"value": "metadata_value_message-2_logkey-1"
+				}
+			]
+		},
+		{
+			"type": "CREATE",
+			"municipalityId": "2281",
+			"message": "message 1 logkey 1",
+			"expires": "2035-05-09T12:00:00+02:00",
+			"owner": "owner_1",
+			"created": "2023-05-08T08:00:00+02:00",
+			"historyReference": "e608841a-7045-40a3-b1c8-7f3a076a0caa",
+			"sourceType": "source_type_1",
+			"metadata": [
+				{
+					"key": "metadata_key_message-1_logkey-1",
+					"value": "metadata_value_message-1_logkey-1"
+				}
+			]
+		},
+		{
+			"type": "UPDATE",
+			"municipalityId": "2281",
+			"message": "message 1 logkey 2",
+			"expires": "2035-05-09T14:00:00+02:00",
+			"owner": "owner_2",
+			"created": "2023-04-08T10:00:00+02:00",
+			"historyReference": "eda8a6bd-a0ca-4fb3-9d6a-fecdda4cb105",
+			"sourceType": "source_type_3",
+			"metadata": [
+				{
+					"key": "metadata_key_message-1_logkey-2",
+					"value": "metadata_value_message-1_logkey-2"
+				}
+			]
+		}
+	],
+	"pageable": {
+		"pageNumber": 0,
+		"pageSize": 20,
+		"sort": {
+			"empty": true,
+			"unsorted": true,
+			"sorted": false
+		},
+		"offset": 0,
+		"paged": true,
+		"unpaged": false
+	},
+	"last": true,
+	"totalPages": 1,
+	"totalElements": 3,
+	"first": true,
+	"size": 20,
+	"number": 0,
+	"sort": {
+		"empty": true,
+		"unsorted": true,
+		"sorted": false
+	},
+	"numberOfElements": 3,
+	"empty": false
+}

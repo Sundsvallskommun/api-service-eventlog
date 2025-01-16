@@ -19,16 +19,20 @@ public class EventService {
 
 	private final EventRepository eventRepository;
 
-	public EventService(EventRepository eventRepository) {
+	public EventService(final EventRepository eventRepository) {
 		this.eventRepository = eventRepository;
 	}
 
-	public void createEvent(String municipalityId, String logKey, Event event) {
+	public void createEvent(final String municipalityId, final String logKey, final Event event) {
 		eventRepository.save(toEventEntity(municipalityId, logKey, event));
 	}
 
-	public Page<Event> findEvents(String municipalityId, String logKey, Specification<EventEntity> filter, Pageable pageable) {
-		final var fullFilter = withMunicipalityId(municipalityId).and(withLogKey(logKey)).and(filter);
+	public Page<Event> findEvents(final String municipalityId, final String logKey, final Specification<EventEntity> filter, final Pageable pageable) {
+		var fullFilter = withMunicipalityId(municipalityId).and(withLogKey(logKey)).and(filter);
+
+		if (logKey == null) {
+			fullFilter = withMunicipalityId(municipalityId).and(filter);
+		}
 		final var matches = eventRepository.findAll(fullFilter, pageable);
 
 		return new PageImpl<>(matches.stream().map(EventMapper::toEvent).toList(), pageable, eventRepository.count(fullFilter));

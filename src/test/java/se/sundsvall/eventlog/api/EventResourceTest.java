@@ -59,7 +59,7 @@ class EventResourceTest {
 	}
 
 	@Test
-	void getEvents() {
+	void getEventsWithLogkey() {
 
 		// Arrange
 		final var municipalityId = "2281";
@@ -71,7 +71,24 @@ class EventResourceTest {
 			.exchange()
 			.expectStatus().isOk();
 
+		// Assert
 		verify(eventServiceMock).findEvents(eq(municipalityId), eq(logKey), any(), eq(Pageable.ofSize(20)));
+	}
+
+	@Test
+	void getEventsWithoutLogkey() {
+
+		// Arrange
+		final var municipalityId = "2281";
+
+		// Act
+		webTestClient.get()
+			.uri(builder -> builder.path("/{municipalityId}").build(Map.of("municipalityId", municipalityId)))
+			.exchange()
+			.expectStatus().isOk();
+
+		// Assert
+		verify(eventServiceMock).findEvents(eq(municipalityId), eq(null), any(), eq(Pageable.ofSize(20)));
 	}
 
 	private Event makeEvent() {
@@ -84,4 +101,5 @@ class EventResourceTest {
 			.withSourceType("sourceType")
 			.withMetadata(List.of(Metadata.create().withKey("key").withValue("value")));
 	}
+
 }
