@@ -30,4 +30,4 @@ spring:
           schema-generation:
             database:
               action: none
-    show-sql: true
+    show-sql: false
