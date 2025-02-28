@@ -35,6 +35,6 @@ public class EventService {
 		}
 		final var matches = eventRepository.findAll(fullFilter, pageable);
 
-		return new PageImpl<>(matches.stream().map(EventMapper::toEvent).toList(), pageable, eventRepository.count(fullFilter));
+		return new PageImpl<>(matches.stream().map(EventMapper::toEvent).toList(), pageable, matches.getTotalElements());
 	}
 }
