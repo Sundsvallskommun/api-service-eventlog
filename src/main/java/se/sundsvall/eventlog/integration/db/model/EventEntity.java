@@ -27,7 +27,9 @@ import org.hibernate.annotations.UuidGenerator;
 @Table(name = "event",
 	indexes = {
 		@Index(name = "event_log_key_index", columnList = "log_key"),
-		@Index(name = "event_municipality_id_index", columnList = "municipality_id")
+		@Index(name = "event_municipality_id_index", columnList = "municipality_id"),
+		@Index(name = "municipality_id_created_index", columnList = "municipality_id, created"),
+		@Index(name = "municipality_id_owner_type_created_index", columnList = "municipality_id, owner, type, created")
 	})
 public class EventEntity {
 
@@ -232,8 +234,12 @@ public class EventEntity {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) { return true; }
-		if (!(obj instanceof final EventEntity other)) { return false; }
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof final EventEntity other)) {
+			return false;
+		}
 		return Objects.equals(created, other.created) && Objects.equals(expires, other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(id, other.id) && Objects.equals(logKey, other.logKey) && Objects.equals(message,
 			other.message) && Objects.equals(metadata, other.metadata) && Objects.equals(municipalityId, other.municipalityId) && Objects.equals(owner, other.owner) && Objects.equals(sourceType, other.sourceType) && Objects.equals(type, other.type);
 	}

@@ -24,6 +24,12 @@
     create index event_municipality_id_index
        on event (municipality_id);
 
+    create index municipality_id_created_index
+       on event (municipality_id, created);
+
+    create index municipality_id_owner_type_created_index
+       on event (municipality_id, owner, type, created);
+
     create index event_metadata_key_index
        on event_metadata (`key`);
 
