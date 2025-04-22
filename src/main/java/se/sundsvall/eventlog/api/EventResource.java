@@ -41,11 +41,11 @@ import se.sundsvall.eventlog.service.EventService;
 @Validated
 @RequestMapping("/{municipalityId}")
 @Tag(name = "Events", description = "Event operations")
-public class EventResource {
+class EventResource {
 
 	private final EventService eventService;
 
-	public EventResource(final EventService eventService) {
+	EventResource(final EventService eventService) {
 		this.eventService = eventService;
 	}
 
@@ -57,7 +57,7 @@ public class EventResource {
 		}))),
 		@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
-	public ResponseEntity<Void> createEvent(
+	ResponseEntity<Void> createEvent(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "logKey", description = "Event will be stored under this UUID. Used to separate data under a unique id.", example = "f0882f1d-06bc-47fd-b017-1d8307f5ce95") @ValidUuid @PathVariable final String logKey,
 		@Valid @NotNull @RequestBody final Event event) {
@@ -77,7 +77,7 @@ public class EventResource {
 		@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
 		@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
-	public ResponseEntity<Page<Event>> getEventsForLogKey(
+	ResponseEntity<Page<Event>> getEventsForLogKey(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "logKey", description = "Events stored under this UUID", example = "f0882f1d-06bc-47fd-b017-1d8307f5ce95") @ValidUuid @PathVariable final String logKey,
 		@Parameter(description = "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)",
@@ -97,7 +97,7 @@ public class EventResource {
 		@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
 		@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
-	public ResponseEntity<Page<Event>> getEvents(
+	ResponseEntity<Page<Event>> getEvents(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(description = "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)",
 			example = "metadata.key:'userId' and metadata.value:'john123'",
@@ -106,5 +106,4 @@ public class EventResource {
 
 		return ok(eventService.findEvents(municipalityId, null, filter, pageable));
 	}
-
 }
