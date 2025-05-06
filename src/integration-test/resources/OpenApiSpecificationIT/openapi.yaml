@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.1"
 servers:
-  - url: http://localhost:50106
+  - url: http://localhost:55488
     description: Generated server url
 tags:
   - name: Events
@@ -254,11 +254,11 @@ components:
     StatusType:
       type: object
       properties:
-        reasonPhrase:
-          type: string
         statusCode:
           type: integer
           format: int32
+        reasonPhrase:
+          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -428,8 +428,6 @@ components:
           type: string
     Event:
       required:
-        - message
-        - owner
         - type
       type: object
       properties:
@@ -446,6 +444,7 @@ components:
           readOnly: true
           example: "2281"
         message:
+          minLength: 1
           type: string
           description: Event description
           example: Request saved in database
@@ -456,6 +455,7 @@ components:
           nullable: true
           example: 2030-10-31T01:30:00+02:00
         owner:
+          minLength: 1
           type: string
           description: Service that created event
           example: SupportManagement
@@ -503,16 +503,15 @@ components:
         - CANCEL
         - DROP
     Metadata:
-      required:
-        - key
-        - value
       type: object
       properties:
         key:
+          minLength: 1
           type: string
           description: The key
           example: userId
         value:
+          minLength: 1
           type: string
           description: The value
           example: john123
@@ -520,12 +519,12 @@ components:
     PageEvent:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         first:
           type: boolean
         last:
@@ -542,11 +541,11 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         numberOfElements:
           type: integer
           format: int32
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         empty:
           type: boolean
     PageableObject:
