@@ -6,7 +6,7 @@ import se.sundsvall.eventlog.api.model.Metadata;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.integration.db.model.EventMetadata;
 
-public class EventMapper {
+public final class EventMapper {
 
 	private EventMapper() {}
 
@@ -24,7 +24,9 @@ public class EventMapper {
 	}
 
 	public static EventMetadata toEventMetadata(final Metadata metadata) {
-		return EventMetadata.create().withKey(metadata.getKey()).withValue(metadata.getValue());
+		return EventMetadata.create()
+			.withKey(metadata.getKey())
+			.withValue(metadata.getValue());
 	}
 
 	public static Event toEvent(final EventEntity eventEntity) {
@@ -42,6 +44,8 @@ public class EventMapper {
 	}
 
 	public static Metadata toMetadata(final EventMetadata eventMetadata) {
-		return Metadata.create().withKey(eventMetadata.getKey()).withValue(eventMetadata.getValue());
+		return Metadata.create()
+			.withKey(eventMetadata.getKey())
+			.withValue(eventMetadata.getValue());
 	}
 }
