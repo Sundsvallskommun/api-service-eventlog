@@ -15,37 +15,37 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 @Schema(description = "Event model")
 public class Event {
 
-	@Schema(description = "Unique identifier", example = "fbe2fb67-005c-4f26-990f-1c95b5f6933e", accessMode = READ_ONLY)
+	@Schema(description = "Unique identifier", examples = "fbe2fb67-005c-4f26-990f-1c95b5f6933e", accessMode = READ_ONLY)
 	private String logKey;
 
 	@Schema(implementation = EventType.class, enumAsRef = true)
 	@NotNull
 	private EventType type;
 
-	@Schema(description = "Municipality ID", example = "2281", accessMode = READ_ONLY)
+	@Schema(description = "Municipality ID", examples = "2281", accessMode = READ_ONLY)
 	private String municipalityId;
 
-	@Schema(description = "Event description", example = "Request saved in database")
+	@Schema(description = "Event description", examples = "Request saved in database")
 	@NotBlank
 	private String message;
 
-	@Schema(description = "Date when event can be scheduled for delete. 'null' means never", example = "2030-10-31T01:30:00.000+02:00", nullable = true)
+	@Schema(description = "Date when event can be scheduled for delete. 'null' means never", examples = "2030-10-31T01:30:00.000+02:00", nullable = true)
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private OffsetDateTime expires;
 
-	@Schema(description = "Service that created event", example = "SupportManagement")
+	@Schema(description = "Service that created event", examples = "SupportManagement")
 	@NotBlank
 	private String owner;
 
-	@Schema(description = "Timestamp when the event was created", example = "2000-10-31T01:30:00.000+02:00", accessMode = Schema.AccessMode.READ_ONLY)
+	@Schema(description = "Timestamp when the event was created", examples = "2000-10-31T01:30:00.000+02:00", accessMode = Schema.AccessMode.READ_ONLY)
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private OffsetDateTime created;
 
-	@Schema(description = "Historical external reference to an immutable snapshot of data", example = "fbe2fb67-005c-4f26-990f-1c95b5f6933e", nullable = true)
+	@Schema(description = "Historical external reference to an immutable snapshot of data", examples = "fbe2fb67-005c-4f26-990f-1c95b5f6933e", nullable = true)
 	@ValidUuid(nullable = true)
 	private String historyReference;
 
-	@Schema(description = "Source which the event refers to", example = "errand", nullable = true)
+	@Schema(description = "Source which the event refers to", examples = "errand", nullable = true)
 	private String sourceType;
 
 	@ArraySchema(schema = @Schema(implementation = Metadata.class))
