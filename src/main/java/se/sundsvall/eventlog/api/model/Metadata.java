@@ -7,11 +7,11 @@ import java.util.Objects;
 @Schema(description = "Metadata model")
 public class Metadata {
 
-	@Schema(description = "The key", example = "userId")
+	@Schema(description = "The key", examples = "userId")
 	@NotBlank
 	private String key;
 
-	@Schema(description = "The value", example = "john123")
+	@Schema(description = "The value", examples = "john123")
 	@NotBlank
 	private String value;
 
