@@ -6,7 +6,7 @@ _A microservice that acts as a centralized event logging system. It receives and
 
 ### Prerequisites
 
-- **Java 21 or higher**
+- **Java 25 or higher**
 - **Maven**
 - **MariaDB**
 - **Git**
