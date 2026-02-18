@@ -1,9 +1,9 @@
 package se.sundsvall.eventlog.integration.db.specification;
 
-import static java.util.Objects.nonNull;
-
 import org.springframework.data.jpa.domain.Specification;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
+
+import static java.util.Objects.nonNull;
 
 public interface EventEntitySpecification {
 

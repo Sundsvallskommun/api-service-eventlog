@@ -1,12 +1,5 @@
 package se.sundsvall.eventlog.api;
 
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.ALL_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
-import static org.springframework.http.ResponseEntity.accepted;
-import static org.springframework.http.ResponseEntity.ok;
-
 import com.turkraft.springfilter.boot.Filter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,6 +29,13 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.service.EventService;
+
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.MediaType.ALL_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.accepted;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @Validated
