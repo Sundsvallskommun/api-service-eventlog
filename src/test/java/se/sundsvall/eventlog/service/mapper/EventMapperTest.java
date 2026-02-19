@@ -1,7 +1,5 @@
 package se.sundsvall.eventlog.service.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -10,6 +8,8 @@ import se.sundsvall.eventlog.api.model.EventType;
 import se.sundsvall.eventlog.api.model.Metadata;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.integration.db.model.EventMetadata;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class EventMapperTest {
 

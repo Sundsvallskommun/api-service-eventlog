@@ -1,9 +1,5 @@
 package se.sundsvall.eventlog.service;
 
-import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
-import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
-import static se.sundsvall.eventlog.service.mapper.EventMapper.toEventEntity;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +9,10 @@ import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.integration.db.EventRepository;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.service.mapper.EventMapper;
+
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
+import static se.sundsvall.eventlog.service.mapper.EventMapper.toEventEntity;
 
 @Service
 public class EventService {

@@ -1,14 +1,5 @@
 package se.sundsvall.eventlog.integration.db;
 
-import static java.time.OffsetDateTime.now;
-import static java.time.temporal.ChronoUnit.SECONDS;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.Assertions.within;
-import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.distinct;
-import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
-import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
-
 import com.turkraft.springfilter.converter.FilterSpecificationConverter;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +20,15 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.integration.db.model.EventMetadata;
+
+import static java.time.OffsetDateTime.now;
+import static java.time.temporal.ChronoUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.within;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.distinct;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
 
 /**
  * Event repository tests.
