@@ -7,67 +7,67 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.1"
 servers:
-  - url: http://localhost:58903
-    description: Generated server url
+- url: http://localhost:55574
+  description: Generated server url
 tags:
-  - name: Events
-    description: Event operations
+- name: Events
+  description: Event operations
 paths:
   /{municipalityId}/{logKey}:
     get:
       tags:
-        - Events
+      - Events
       summary: Fetch log events
       description: "Fetch log events for a specific logKey, with or without filtering\
         \ the result"
       operationId: getEventsForLogKey
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: logKey
-          in: path
-          description: Events stored under this UUID
-          required: true
-          schema:
-            type: string
-          example: f0882f1d-06bc-47fd-b017-1d8307f5ce95
-        - name: filter
-          in: query
-          description: "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)"
-          required: false
-          schema:
-            type: string
-          example: metadata.key:'userId' and metadata.value:'john123'
-        - name: page
-          in: query
-          description: Zero-based page index (0..N)
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - name: size
-          in: query
-          description: The size of the page to be returned
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-        - name: sort
-          in: query
-          description: "Sorting criteria in the format: property,(asc|desc). Default\
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: logKey
+        in: path
+        description: Events stored under this UUID
+        required: true
+        schema:
+          type: string
+        example: f0882f1d-06bc-47fd-b017-1d8307f5ce95
+      - name: filter
+        in: query
+        description: "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)"
+        required: false
+        schema:
+          type: string
+        example: metadata.key:'userId' and metadata.value:'john123'
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
           \ sort order is ascending. Multiple sort criteria are supported."
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: Successful Operation
@@ -81,8 +81,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -97,26 +97,26 @@ paths:
                 $ref: "#/components/schemas/Problem"
     post:
       tags:
-        - Events
+      - Events
       summary: Create log event
       description: Creates a log event under logKey
       operationId: createEvent
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: logKey
-          in: path
-          description: Event will be stored under this UUID. Used to separate data under
-            a unique id.
-          required: true
-          schema:
-            type: string
-          example: f0882f1d-06bc-47fd-b017-1d8307f5ce95
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: logKey
+        in: path
+        description: Event will be stored under this UUID. Used to separate data under
+          a unique id.
+        required: true
+        schema:
+          type: string
+        example: f0882f1d-06bc-47fd-b017-1d8307f5ce95
       requestBody:
         content:
           application/json:
@@ -132,8 +132,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server error
           content:
@@ -143,50 +143,50 @@ paths:
   /{municipalityId}:
     get:
       tags:
-        - Events
+      - Events
       summary: Fetch log events
       description: "Fetch log events, with or without filtering the result"
       operationId: getEvents
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: filter
-          in: query
-          description: "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)"
-          required: false
-          schema:
-            type: string
-          example: metadata.key:'userId' and metadata.value:'john123'
-        - name: page
-          in: query
-          description: Zero-based page index (0..N)
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - name: size
-          in: query
-          description: The size of the page to be returned
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-        - name: sort
-          in: query
-          description: "Sorting criteria in the format: property,(asc|desc). Default\
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: filter
+        in: query
+        description: "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)"
+        required: false
+        schema:
+          type: string
+        example: metadata.key:'userId' and metadata.value:'john123'
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
           \ sort order is ascending. Multiple sort criteria are supported."
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: Successful Operation
@@ -200,8 +200,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -217,7 +217,7 @@ paths:
   /api-docs:
     get:
       tags:
-        - API
+      - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
@@ -239,182 +239,54 @@ components:
           type: string
         detail:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
         instance:
           type: string
           format: uri
         type:
           type: string
           format: uri
-        parameters:
-          type: object
-          additionalProperties: {}
-    StatusType:
-      type: object
-      properties:
-        statusCode:
+        status:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     ConstraintViolationProblem:
       type: object
       properties:
-        cause:
-          $ref: "#/components/schemas/ThrowableProblem"
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              className:
-                type: string
-              nativeMethod:
-                type: boolean
         type:
           type: string
           format: uri
         status:
-          $ref: "#/components/schemas/StatusType"
+          type: integer
+          format: int32
         violations:
           type: array
           items:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        message:
-          type: string
+        causeAsProblem:
+          $ref: "#/components/schemas/ThrowableProblem"
         detail:
           type: string
         instance:
           type: string
           format: uri
-        parameters:
-          type: object
-          additionalProperties: {}
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    className:
-                      type: string
-                    nativeMethod:
-                      type: boolean
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
-          type: string
     ThrowableProblem:
       type: object
       properties:
-        cause: {}
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              className:
-                type: string
-              nativeMethod:
-                type: boolean
-        message:
-          type: string
-        title:
-          type: string
-        detail:
-          type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
-        instance:
-          type: string
-          format: uri
         type:
           type: string
           format: uri
-        parameters:
-          type: object
-          additionalProperties: {}
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    className:
-                      type: string
-                    nativeMethod:
-                      type: boolean
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
+        title:
           type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        causeAsProblem: {}
     Violation:
       type: object
       properties:
@@ -430,7 +302,7 @@ components:
           type: string
           description: Unique identifier
           examples:
-            - fbe2fb67-005c-4f26-990f-1c95b5f6933e
+          - fbe2fb67-005c-4f26-990f-1c95b5f6933e
           readOnly: true
         type:
           $ref: "#/components/schemas/EventType"
@@ -438,51 +310,51 @@ components:
           type: string
           description: Municipality ID
           examples:
-            - "2281"
+          - "2281"
           readOnly: true
         message:
           type: string
           description: Event description
           examples:
-            - Request saved in database
+          - Request saved in database
           minLength: 1
         expires:
           type: string
           format: date-time
           description: Date when event can be scheduled for delete. 'null' means never
           examples:
-            - 2030-10-31T01:30:00.000+02:00
+          - 2030-10-31T01:30:00.000+02:00
         owner:
           type: string
           description: Service that created event
           examples:
-            - SupportManagement
+          - SupportManagement
           minLength: 1
         created:
           type: string
           format: date-time
           description: Timestamp when the event was created
           examples:
-            - 2000-10-31T01:30:00.000+02:00
+          - 2000-10-31T01:30:00.000+02:00
           readOnly: true
         historyReference:
           type: string
           description: Historical external reference to an immutable snapshot of data
           examples:
-            - fbe2fb67-005c-4f26-990f-1c95b5f6933e
+          - fbe2fb67-005c-4f26-990f-1c95b5f6933e
         sourceType:
           type: string
           description: Source which the event refers to
           examples:
-            - errand
+          - errand
         metadata:
           type: array
           items:
             $ref: "#/components/schemas/Metadata"
       required:
-        - message
-        - owner
-        - type
+      - message
+      - owner
+      - type
     EventType:
       type: string
       description: |
@@ -497,14 +369,14 @@ components:
         * `CANCEL` - terminate, abort, decommission, kill
         * `DROP` - skip, omit, ignore, disregard
       enum:
-        - CREATE
-        - READ
-        - UPDATE
-        - DELETE
-        - ACCESS
-        - EXECUTE
-        - CANCEL
-        - DROP
+      - CREATE
+      - READ
+      - UPDATE
+      - DELETE
+      - ACCESS
+      - EXECUTE
+      - CANCEL
+      - DROP
     Metadata:
       type: object
       description: Metadata model
@@ -513,37 +385,37 @@ components:
           type: string
           description: The key
           examples:
-            - userId
+          - userId
           minLength: 1
         value:
           type: string
           description: The value
           examples:
-            - john123
+          - john123
           minLength: 1
       required:
-        - key
-        - value
+      - key
+      - value
     PageEvent:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         pageable:
           $ref: "#/components/schemas/PageableObject"
         numberOfElements:
           type: integer
           format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
         first:
           type: boolean
         last:
           type: boolean
-        sort:
-          $ref: "#/components/schemas/SortObject"
         size:
           type: integer
           format: int32
@@ -559,6 +431,8 @@ components:
     PageableObject:
       type: object
       properties:
+        unpaged:
+          type: boolean
         paged:
           type: boolean
         pageNumber:
@@ -567,8 +441,6 @@ components:
         pageSize:
           type: integer
           format: int32
-        unpaged:
-          type: boolean
         sort:
           $ref: "#/components/schemas/SortObject"
         offset:
@@ -577,9 +449,9 @@ components:
     SortObject:
       type: object
       properties:
-        sorted:
-          type: boolean
         unsorted:
+          type: boolean
+        sorted:
           type: boolean
         empty:
           type: boolean
