@@ -50,8 +50,8 @@ public class EventEntity {
 	@Column(name = "sub_type")
 	private String subType;
 
-	@Column(name = "transaction_id")
-	private String transactionId;
+	@Column(name = "correlation_id")
+	private String correlationId;
 
 	@Column(name = "owner")
 	private String owner;
@@ -153,16 +153,16 @@ public class EventEntity {
 		return this;
 	}
 
-	public String getTransactionId() {
-		return transactionId;
+	public String getCorrelationId() {
+		return correlationId;
 	}
 
-	public void setTransactionId(final String transactionId) {
-		this.transactionId = transactionId;
+	public void setCorrelationId(final String correlationId) {
+		this.correlationId = correlationId;
 	}
 
-	public EventEntity withTransactionId(final String transactionId) {
-		this.transactionId = transactionId;
+	public EventEntity withCorrelationId(final String correlationId) {
+		this.correlationId = correlationId;
 		return this;
 	}
 
@@ -277,7 +277,7 @@ public class EventEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(created, details, expires, historyReference, id, logKey, message, metadata, municipalityId, owner, sourceType, subType, transactionId, type);
+		return Objects.hash(created, details, expires, historyReference, id, logKey, message, metadata, municipalityId, owner, sourceType, subType, correlationId, type);
 	}
 
 	@Override
@@ -290,13 +290,13 @@ public class EventEntity {
 		}
 		return Objects.equals(created, other.created) && Objects.equals(details, other.details) && Objects.equals(expires, other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(id, other.id)
 			&& Objects.equals(logKey, other.logKey) && Objects.equals(message, other.message) && Objects.equals(metadata, other.metadata) && Objects.equals(municipalityId, other.municipalityId) && Objects.equals(owner, other.owner)
-			&& Objects.equals(sourceType, other.sourceType) && Objects.equals(subType, other.subType) && Objects.equals(transactionId, other.transactionId) && Objects.equals(type, other.type);
+			&& Objects.equals(sourceType, other.sourceType) && Objects.equals(subType, other.subType) && Objects.equals(correlationId, other.correlationId) && Objects.equals(type, other.type);
 	}
 
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("EventEntity [id=").append(id).append(", municipalityId=").append(municipalityId).append(", logKey=").append(logKey).append(", type=").append(type).append(", subType=").append(subType).append(", transactionId=").append(transactionId)
+		builder.append("EventEntity [id=").append(id).append(", municipalityId=").append(municipalityId).append(", logKey=").append(logKey).append(", type=").append(type).append(", subType=").append(subType).append(", correlationId=").append(correlationId)
 			.append(", owner=").append(owner).append(", sourceType=").append(sourceType).append(", details=").append(details).append(", message=").append(message).append(", historyReference=").append(historyReference).append(", created=").append(created)
 			.append(", expires=").append(expires).append(", metadata=").append(metadata).append("]");
 		return builder.toString();

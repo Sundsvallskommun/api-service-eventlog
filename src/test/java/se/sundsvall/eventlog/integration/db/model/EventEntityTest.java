@@ -50,7 +50,7 @@ class EventEntityTest {
 		final var owner = "owner";
 		final var sourceType = "sourceType";
 		final var subType = "subType";
-		final var transactionId = UUID.randomUUID().toString();
+		final var correlationId = UUID.randomUUID().toString();
 		final var type = "type";
 
 		final var entity = EventEntity.create()
@@ -66,7 +66,7 @@ class EventEntityTest {
 			.withOwner(owner)
 			.withSourceType(sourceType)
 			.withSubType(subType)
-			.withTransactionId(transactionId)
+			.withCorrelationId(correlationId)
 			.withType(type);
 
 		assertThat(entity).hasNoNullFieldsOrProperties();
@@ -82,7 +82,7 @@ class EventEntityTest {
 		assertThat(entity.getOwner()).isEqualTo(owner);
 		assertThat(entity.getSourceType()).isEqualTo(sourceType);
 		assertThat(entity.getSubType()).isEqualTo(subType);
-		assertThat(entity.getTransactionId()).isEqualTo(transactionId);
+		assertThat(entity.getCorrelationId()).isEqualTo(correlationId);
 		assertThat(entity.getType()).isEqualTo(type);
 	}
 

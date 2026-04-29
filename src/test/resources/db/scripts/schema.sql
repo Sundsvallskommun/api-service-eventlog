@@ -1,6 +1,7 @@
     create table event (
         created datetime(6),
         expires datetime(6),
+        correlation_id varchar(255),
         history_reference varchar(255),
         id varchar(255) not null,
         log_key varchar(255),
@@ -8,7 +9,6 @@
         owner varchar(255),
         source_type varchar(255),
         sub_type varchar(255),
-        transaction_id varchar(255),
         type varchar(255),
         details longtext,
         message longtext,

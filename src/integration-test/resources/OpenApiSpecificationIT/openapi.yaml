@@ -366,9 +366,9 @@ components:
           description: Event sub type
           examples:
           - ATTACHMENT
-        transactionId:
+        correlationId:
           type: string
-          description: Transaction id, groups events originating from the same operation
+          description: Correlation id, groups events originating from the same operation
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afa6
         municipalityId:

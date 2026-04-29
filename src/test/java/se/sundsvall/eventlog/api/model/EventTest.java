@@ -41,7 +41,7 @@ class EventTest {
 		final var logKey = "logKey";
 		final var eventType = EventType.CREATE;
 		final var subType = "ATTACHMENT";
-		final var transactionId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+		final var correlationId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 		final var message = "message";
 		final var details = "Filnamn 'abc.pdf'";
 		final var municipalityId = "municipalityId";
@@ -57,7 +57,7 @@ class EventTest {
 			.withLogKey(logKey)
 			.withType(eventType)
 			.withSubType(subType)
-			.withTransactionId(transactionId)
+			.withCorrelationId(correlationId)
 			.withMessage(message)
 			.withDetails(details)
 			.withMunicipalityId(municipalityId)
@@ -73,7 +73,7 @@ class EventTest {
 		assertThat(bean.getLogKey()).isEqualTo(logKey);
 		assertThat(bean.getType()).isEqualTo(eventType);
 		assertThat(bean.getSubType()).isEqualTo(subType);
-		assertThat(bean.getTransactionId()).isEqualTo(transactionId);
+		assertThat(bean.getCorrelationId()).isEqualTo(correlationId);
 		assertThat(bean.getMessage()).isEqualTo(message);
 		assertThat(bean.getDetails()).isEqualTo(details);
 		assertThat(bean.getMunicipalityId()).isEqualTo(municipalityId);
