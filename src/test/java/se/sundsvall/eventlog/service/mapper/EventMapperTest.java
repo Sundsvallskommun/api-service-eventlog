@@ -17,7 +17,7 @@ class EventMapperTest {
 	private static final String LOG_KEY = "logKey";
 	private static final EventType EVENT_TYPE = EventType.CREATE;
 	private static final String SUB_TYPE = "ATTACHMENT";
-	private static final String CORRELATION_ID = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+	private static final String REQUEST_GROUP_ID = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 	private static final String MESSAGE = "message";
 	private static final String DETAILS = "Filnamn 'abc.pdf'";
 	private static final String MUNICIPALITY_ID = "municipalityId";
@@ -34,7 +34,7 @@ class EventMapperTest {
 		final var event = Event.create()
 			.withType(EVENT_TYPE)
 			.withSubType(SUB_TYPE)
-			.withCorrelationId(CORRELATION_ID)
+			.withRequestGroupId(REQUEST_GROUP_ID)
 			.withMessage(MESSAGE)
 			.withDetails(DETAILS)
 			.withExpires(EXPIRE_DATE)
@@ -49,7 +49,7 @@ class EventMapperTest {
 		assertThat(eventEntity.getLogKey()).isEqualTo(LOG_KEY);
 		assertThat(eventEntity.getType()).isEqualTo(EVENT_TYPE.toString());
 		assertThat(eventEntity.getSubType()).isEqualTo(SUB_TYPE);
-		assertThat(eventEntity.getCorrelationId()).isEqualTo(CORRELATION_ID);
+		assertThat(eventEntity.getRequestGroupId()).isEqualTo(REQUEST_GROUP_ID);
 		assertThat(eventEntity.getMessage()).isEqualTo(MESSAGE);
 		assertThat(eventEntity.getDetails()).isEqualTo(DETAILS);
 		assertThat(eventEntity.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
@@ -68,7 +68,7 @@ class EventMapperTest {
 			.withLogKey(LOG_KEY)
 			.withType(EVENT_TYPE.toString())
 			.withSubType(SUB_TYPE)
-			.withCorrelationId(CORRELATION_ID)
+			.withRequestGroupId(REQUEST_GROUP_ID)
 			.withMessage(MESSAGE)
 			.withDetails(DETAILS)
 			.withMunicipalityId(MUNICIPALITY_ID)
@@ -85,7 +85,7 @@ class EventMapperTest {
 		assertThat(event.getLogKey()).isEqualTo(LOG_KEY);
 		assertThat(event.getType()).isEqualTo(EVENT_TYPE);
 		assertThat(event.getSubType()).isEqualTo(SUB_TYPE);
-		assertThat(event.getCorrelationId()).isEqualTo(CORRELATION_ID);
+		assertThat(event.getRequestGroupId()).isEqualTo(REQUEST_GROUP_ID);
 		assertThat(event.getMessage()).isEqualTo(MESSAGE);
 		assertThat(event.getDetails()).isEqualTo(DETAILS);
 		assertThat(event.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
