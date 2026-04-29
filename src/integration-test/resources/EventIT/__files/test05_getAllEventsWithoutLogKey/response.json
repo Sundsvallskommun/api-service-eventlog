@@ -1,6 +1,7 @@
 {
 	"content": [
 		{
+			"id": "622cfd45-3f15-427a-9c46-72f321f15888",
 			"logKey": "1d968db4-1ced-4144-a167-357862774116",
 			"type": "DELETE",
 			"municipalityId": "2281",
@@ -18,6 +19,7 @@
 			]
 		},
 		{
+			"id": "922f95e3-608b-4e3c-ae22-f11fb849799a",
 			"logKey": "1d968db4-1ced-4144-a167-357862774116",
 			"type": "CREATE",
 			"municipalityId": "2281",
@@ -35,6 +37,7 @@
 			]
 		},
 		{
+			"id": "e99692d1-efcb-4568-b817-5fa2bbb2971d",
 			"logKey": "836fcf4f-d24e-42a4-9a8f-170b75dfc158",
 			"type": "UPDATE",
 			"municipalityId": "2281",

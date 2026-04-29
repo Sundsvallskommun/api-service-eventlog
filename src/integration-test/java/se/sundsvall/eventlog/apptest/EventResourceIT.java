@@ -5,8 +5,10 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,7 @@ class EventResourceIT extends AbstractAppTest {
 	private static final String PATH = "/2281";
 	private static final String PATH_WITH_WRONG_MUNICIPALITY_ID = "/1984/";
 	private static final String LOG_KEY = "f0882f1d-06bc-47fd-b017-1d8307f5ce95";
+	private static final String EVENT_ID = "922f95e3-608b-4e3c-ae22-f11fb849799a";
 	private static final String REQUEST_FILE = "request.json";
 	private static final String RESPONSE_FILE = "response.json";
 
@@ -97,7 +100,30 @@ class EventResourceIT extends AbstractAppTest {
 			.withExpectedResponseHeader(CONTENT_TYPE, List.of(APPLICATION_JSON_VALUE))
 			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
+	}
 
+	@Test
+	void test07_getEventById() {
+		setupCall()
+			.withServicePath(PATH + "/events/" + EVENT_ID)
+			.withHttpMethod(GET)
+			.withHeader(ACCEPT, APPLICATION_JSON_VALUE)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponseHeader(CONTENT_TYPE, List.of(APPLICATION_JSON_VALUE))
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
+	}
+
+	@Test
+	void test08_getEventByIdNotFound() {
+		setupCall()
+			.withServicePath(PATH + "/events/00000000-0000-0000-0000-000000000000")
+			.withHttpMethod(GET)
+			.withHeader(ACCEPT, APPLICATION_JSON_VALUE)
+			.withExpectedResponseStatus(NOT_FOUND)
+			.withExpectedResponseHeader(CONTENT_TYPE, List.of(APPLICATION_PROBLEM_JSON_VALUE))
+			.withExpectedResponse(RESPONSE_FILE)
+			.sendRequestAndVerifyResponse();
 	}
 
 }

@@ -15,12 +15,25 @@ import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 @Schema(description = "Event model")
 public class Event {
 
+	@Schema(description = "Unique identifier for this event", examples = "3fa85f64-5717-4562-b3fc-2c963f66afa6", accessMode = READ_ONLY)
+	private String id;
+
 	@Schema(description = "Unique identifier", examples = "fbe2fb67-005c-4f26-990f-1c95b5f6933e", accessMode = READ_ONLY)
 	private String logKey;
 
 	@Schema(implementation = EventType.class, enumAsRef = true)
 	@NotNull
 	private EventType type;
+
+	@Schema(description = "Event sub type", examples = "ATTACHMENT")
+	private String subType;
+
+	@Schema(description = "Transaction id, groups events originating from the same operation", examples = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+	@ValidUuid(nullable = true)
+	private String transactionId;
+
+	@Schema(description = "Additional details about the event", examples = "Filnamn 'abc.pdf'")
+	private String details;
 
 	@Schema(description = "Municipality ID", examples = "2281", accessMode = READ_ONLY)
 	private String municipalityId;
@@ -55,6 +68,19 @@ public class Event {
 		return new Event();
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(final String id) {
+		this.id = id;
+	}
+
+	public Event withId(final String id) {
+		this.id = id;
+		return this;
+	}
+
 	public String getLogKey() {
 		return logKey;
 	}
@@ -78,6 +104,45 @@ public class Event {
 
 	public Event withType(final EventType type) {
 		this.type = type;
+		return this;
+	}
+
+	public String getSubType() {
+		return subType;
+	}
+
+	public void setSubType(final String subType) {
+		this.subType = subType;
+	}
+
+	public Event withSubType(final String subType) {
+		this.subType = subType;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(final String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public Event withTransactionId(final String transactionId) {
+		this.transactionId = transactionId;
+		return this;
+	}
+
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(final String details) {
+		this.details = details;
+	}
+
+	public Event withDetails(final String details) {
+		this.details = details;
 		return this;
 	}
 
@@ -190,21 +255,26 @@ public class Event {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		final Event event = (Event) o;
-		return Objects.equals(logKey, event.logKey) && type == event.type && Objects.equals(municipalityId, event.municipalityId) && Objects.equals(message, event.message) && Objects.equals(expires, event.expires)
+		return Objects.equals(id, event.id) && Objects.equals(logKey, event.logKey) && type == event.type && Objects.equals(subType, event.subType) && Objects.equals(transactionId, event.transactionId)
+			&& Objects.equals(details, event.details) && Objects.equals(municipalityId, event.municipalityId) && Objects.equals(message, event.message) && Objects.equals(expires, event.expires)
 			&& Objects.equals(owner, event.owner) && Objects.equals(created, event.created) && Objects.equals(historyReference, event.historyReference) && Objects.equals(sourceType, event.sourceType)
 			&& Objects.equals(metadata, event.metadata);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(logKey, type, municipalityId, message, expires, owner, created, historyReference, sourceType, metadata);
+		return Objects.hash(id, logKey, type, subType, transactionId, details, municipalityId, message, expires, owner, created, historyReference, sourceType, metadata);
 	}
 
 	@Override
 	public String toString() {
 		return "Event{" +
-			"logKey='" + logKey + '\'' +
+			"id='" + id + '\'' +
+			", logKey='" + logKey + '\'' +
 			", type=" + type +
+			", subType='" + subType + '\'' +
+			", transactionId='" + transactionId + '\'' +
+			", details='" + details + '\'' +
 			", municipalityId='" + municipalityId + '\'' +
 			", message='" + message + '\'' +
 			", expires=" + expires +

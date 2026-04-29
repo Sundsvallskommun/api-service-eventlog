@@ -47,11 +47,20 @@ public class EventEntity {
 	@Column(name = "type")
 	private String type;
 
+	@Column(name = "sub_type")
+	private String subType;
+
+	@Column(name = "transaction_id")
+	private String transactionId;
+
 	@Column(name = "owner")
 	private String owner;
 
 	@Column(name = "source_type")
 	private String sourceType;
+
+	@Column(name = "details", length = Length.LONG32)
+	private String details;
 
 	@Column(name = "message", length = Length.LONG32)
 	private String message;
@@ -131,6 +140,32 @@ public class EventEntity {
 		return this;
 	}
 
+	public String getSubType() {
+		return subType;
+	}
+
+	public void setSubType(final String subType) {
+		this.subType = subType;
+	}
+
+	public EventEntity withSubType(final String subType) {
+		this.subType = subType;
+		return this;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(final String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public EventEntity withTransactionId(final String transactionId) {
+		this.transactionId = transactionId;
+		return this;
+	}
+
 	public String getOwner() {
 		return owner;
 	}
@@ -154,6 +189,19 @@ public class EventEntity {
 
 	public EventEntity withSourceType(final String sourceType) {
 		this.sourceType = sourceType;
+		return this;
+	}
+
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(final String details) {
+		this.details = details;
+	}
+
+	public EventEntity withDetails(final String details) {
+		this.details = details;
 		return this;
 	}
 
@@ -229,7 +277,7 @@ public class EventEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(created, expires, historyReference, id, logKey, message, metadata, municipalityId, owner, sourceType, type);
+		return Objects.hash(created, details, expires, historyReference, id, logKey, message, metadata, municipalityId, owner, sourceType, subType, transactionId, type);
 	}
 
 	@Override
@@ -240,15 +288,17 @@ public class EventEntity {
 		if (!(obj instanceof final EventEntity other)) {
 			return false;
 		}
-		return Objects.equals(created, other.created) && Objects.equals(expires, other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(id, other.id) && Objects.equals(logKey, other.logKey) && Objects.equals(message,
-			other.message) && Objects.equals(metadata, other.metadata) && Objects.equals(municipalityId, other.municipalityId) && Objects.equals(owner, other.owner) && Objects.equals(sourceType, other.sourceType) && Objects.equals(type, other.type);
+		return Objects.equals(created, other.created) && Objects.equals(details, other.details) && Objects.equals(expires, other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(id, other.id)
+			&& Objects.equals(logKey, other.logKey) && Objects.equals(message, other.message) && Objects.equals(metadata, other.metadata) && Objects.equals(municipalityId, other.municipalityId) && Objects.equals(owner, other.owner)
+			&& Objects.equals(sourceType, other.sourceType) && Objects.equals(subType, other.subType) && Objects.equals(transactionId, other.transactionId) && Objects.equals(type, other.type);
 	}
 
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("EventEntity [id=").append(id).append(", municipalityId=").append(municipalityId).append(", logKey=").append(logKey).append(", type=").append(type).append(", owner=").append(owner).append(", sourceType=").append(sourceType).append(
-			", message=").append(message).append(", historyReference=").append(historyReference).append(", created=").append(created).append(", expires=").append(expires).append(", metadata=").append(metadata).append("]");
+		builder.append("EventEntity [id=").append(id).append(", municipalityId=").append(municipalityId).append(", logKey=").append(logKey).append(", type=").append(type).append(", subType=").append(subType).append(", transactionId=").append(transactionId)
+			.append(", owner=").append(owner).append(", sourceType=").append(sourceType).append(", details=").append(details).append(", message=").append(message).append(", historyReference=").append(historyReference).append(", created=").append(created)
+			.append(", expires=").append(expires).append(", metadata=").append(metadata).append("]");
 		return builder.toString();
 	}
 }

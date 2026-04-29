@@ -45,9 +45,12 @@ class EventEntityTest {
 		final var municipalityId = "municipalityId";
 		final var logKey = UUID.randomUUID().toString();
 		final var message = "message";
+		final var details = "details";
 		final var metadata = List.of(EventMetadata.create());
 		final var owner = "owner";
 		final var sourceType = "sourceType";
+		final var subType = "subType";
+		final var transactionId = UUID.randomUUID().toString();
 		final var type = "type";
 
 		final var entity = EventEntity.create()
@@ -58,9 +61,12 @@ class EventEntityTest {
 			.withMunicipalityId(municipalityId)
 			.withLogKey(logKey)
 			.withMessage(message)
+			.withDetails(details)
 			.withMetadata(metadata)
 			.withOwner(owner)
 			.withSourceType(sourceType)
+			.withSubType(subType)
+			.withTransactionId(transactionId)
 			.withType(type);
 
 		assertThat(entity).hasNoNullFieldsOrProperties();
@@ -71,9 +77,12 @@ class EventEntityTest {
 		assertThat(entity.getMunicipalityId()).isEqualTo(municipalityId);
 		assertThat(entity.getLogKey()).isEqualTo(logKey);
 		assertThat(entity.getMessage()).isEqualTo(message);
+		assertThat(entity.getDetails()).isEqualTo(details);
 		assertThat(entity.getMetadata()).isEqualTo(metadata);
 		assertThat(entity.getOwner()).isEqualTo(owner);
 		assertThat(entity.getSourceType()).isEqualTo(sourceType);
+		assertThat(entity.getSubType()).isEqualTo(subType);
+		assertThat(entity.getTransactionId()).isEqualTo(transactionId);
 		assertThat(entity.getType()).isEqualTo(type);
 	}
 

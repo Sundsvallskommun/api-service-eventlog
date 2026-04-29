@@ -68,6 +68,22 @@ class EventResource {
 			.build();
 	}
 
+	@GetMapping(path = "/events/{id}", produces = APPLICATION_JSON_VALUE)
+	@Operation(summary = "Fetch log event by id", description = "Fetch a single log event by its unique id", responses = {
+		@ApiResponse(responseCode = "200", description = "Successful Operation", useReturnTypeSchema = true),
+		@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
+			Problem.class, ConstraintViolationProblem.class
+		}))),
+		@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
+		@ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
+	ResponseEntity<Event> getEventById(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "id", description = "Event id", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6") @ValidUuid @PathVariable final String id) {
+
+		return ok(eventService.findEventById(municipalityId, id));
+	}
+
 	@GetMapping(path = "/{logKey}", produces = APPLICATION_JSON_VALUE)
 	@Operation(summary = "Fetch log events", description = "Fetch log events for a specific logKey, with or without filtering the result", responses = {
 		@ApiResponse(responseCode = "200", description = "Successful Operation", useReturnTypeSchema = true),
