@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.integration.db.EventRepository;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
@@ -25,6 +26,13 @@ public class EventService {
 
 	public void createEvent(final String municipalityId, final String logKey, final Event event) {
 		eventRepository.save(toEventEntity(municipalityId, logKey, event));
+	}
+
+	public Event findEventById(final String municipalityId, final String id) {
+		return eventRepository.findById(id)
+			.filter(entity -> municipalityId.equals(entity.getMunicipalityId()))
+			.map(EventMapper::toEvent)
+			.orElseThrow(() -> Problem.notFound("Event with id '%s' not found".formatted(id)));
 	}
 
 	public Page<Event> findEvents(final String municipalityId, final String logKey, final Specification<EventEntity> filter, final Pageable pageable) {

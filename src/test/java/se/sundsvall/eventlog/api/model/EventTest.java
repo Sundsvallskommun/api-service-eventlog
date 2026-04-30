@@ -37,9 +37,13 @@ class EventTest {
 	@Test
 	void testBuilderMethods() {
 
+		final var id = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 		final var logKey = "logKey";
 		final var eventType = EventType.CREATE;
+		final var subType = "ATTACHMENT";
+		final var requestGroupId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 		final var message = "message";
+		final var details = "Filnamn 'abc.pdf'";
 		final var municipalityId = "municipalityId";
 		final var expireDate = OffsetDateTime.now().plusYears(10);
 		final var owner = "owner";
@@ -49,9 +53,13 @@ class EventTest {
 		final var metadata = Metadata.create().withKey("key").withValue("value");
 
 		final var bean = Event.create()
+			.withId(id)
 			.withLogKey(logKey)
 			.withType(eventType)
+			.withSubType(subType)
+			.withRequestGroupId(requestGroupId)
 			.withMessage(message)
+			.withDetails(details)
 			.withMunicipalityId(municipalityId)
 			.withExpires(expireDate)
 			.withOwner(owner)
@@ -61,9 +69,13 @@ class EventTest {
 			.withMetadata(List.of(metadata));
 
 		assertThat(bean).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(bean.getId()).isEqualTo(id);
 		assertThat(bean.getLogKey()).isEqualTo(logKey);
 		assertThat(bean.getType()).isEqualTo(eventType);
+		assertThat(bean.getSubType()).isEqualTo(subType);
+		assertThat(bean.getRequestGroupId()).isEqualTo(requestGroupId);
 		assertThat(bean.getMessage()).isEqualTo(message);
+		assertThat(bean.getDetails()).isEqualTo(details);
 		assertThat(bean.getMunicipalityId()).isEqualTo(municipalityId);
 		assertThat(bean.getExpires()).isEqualTo(expireDate);
 		assertThat(bean.getOwner()).isEqualTo(owner);

@@ -21,6 +21,7 @@ import se.sundsvall.eventlog.service.EventService;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -31,6 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 class EventResourceTest {
 
 	private static final String PATH = "/{municipalityId}/{logKey}";
+	private static final String PATH_EVENT_BY_ID = "/{municipalityId}/events/{id}";
 
 	@Autowired
 	private WebTestClient webTestClient;
@@ -91,6 +93,24 @@ class EventResourceTest {
 
 		// Assert
 		verify(eventServiceMock).findEvents(eq(municipalityId), eq(null), any(), eq(Pageable.ofSize(20)));
+	}
+
+	@Test
+	void getEventById() {
+
+		// Arrange
+		final var municipalityId = "2281";
+		final var id = UUID.randomUUID().toString();
+		when(eventServiceMock.findEventById(municipalityId, id)).thenReturn(makeEvent());
+
+		// Act
+		webTestClient.get()
+			.uri(builder -> builder.path(PATH_EVENT_BY_ID).build(Map.of("municipalityId", municipalityId, "id", id)))
+			.exchange()
+			.expectStatus().isOk();
+
+		// Assert
+		verify(eventServiceMock).findEventById(municipalityId, id);
 	}
 
 	private Event makeEvent() {

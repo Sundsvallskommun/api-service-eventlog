@@ -1,5 +1,6 @@
 package se.sundsvall.eventlog.service;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,17 +14,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.integration.db.EventRepository;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.service.mapper.EventMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
 
@@ -32,6 +36,7 @@ class EventServiceTest {
 
 	private static final String MUNICIPALITY_ID = "municipalityId";
 	private static final String LOG_KEY = "logKey";
+	private static final String EVENT_ID = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 
 	@Mock
 	private EventRepository eventRepositoryMock;
@@ -87,6 +92,43 @@ class EventServiceTest {
 			assertThat(result.getSize()).isEqualTo(1);
 			assertThat(result).containsExactly(eventMock);
 		}
+	}
+
+	@Test
+	void findEventById() {
+		when(eventRepositoryMock.findById(EVENT_ID)).thenReturn(Optional.of(eventEntityMock));
+		when(eventEntityMock.getMunicipalityId()).thenReturn(MUNICIPALITY_ID);
+
+		try (final MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
+			mapper.when(() -> EventMapper.toEvent(any())).thenReturn(eventMock);
+
+			final var result = eventService.findEventById(MUNICIPALITY_ID, EVENT_ID);
+
+			verify(eventRepositoryMock).findById(EVENT_ID);
+			mapper.verify(() -> EventMapper.toEvent(same(eventEntityMock)));
+			assertThat(result).isSameAs(eventMock);
+		}
+	}
+
+	@Test
+	void findEventByIdNotFound() {
+		when(eventRepositoryMock.findById(EVENT_ID)).thenReturn(Optional.empty());
+
+		assertThatThrownBy(() -> eventService.findEventById(MUNICIPALITY_ID, EVENT_ID))
+			.isInstanceOf(ThrowableProblem.class)
+			.hasMessageContaining(EVENT_ID)
+			.extracting("status").isEqualTo(NOT_FOUND);
+	}
+
+	@Test
+	void findEventByIdWrongMunicipalityId() {
+		when(eventRepositoryMock.findById(EVENT_ID)).thenReturn(Optional.of(eventEntityMock));
+		when(eventEntityMock.getMunicipalityId()).thenReturn("otherMunicipality");
+
+		assertThatThrownBy(() -> eventService.findEventById(MUNICIPALITY_ID, EVENT_ID))
+			.isInstanceOf(ThrowableProblem.class)
+			.hasMessageContaining(EVENT_ID)
+			.extracting("status").isEqualTo(NOT_FOUND);
 	}
 
 	@Test

@@ -34,6 +34,7 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 class EventResourceFailuresTest {
 
 	private static final String PATH = "/{municipalityId}/{logKey}";
+	private static final String PATH_EVENT_BY_ID = "/{municipalityId}/events/{id}";
 	private static final String MUNICIPALITY_ID = "2281";
 
 	@Autowired
@@ -100,6 +101,60 @@ class EventResourceFailuresTest {
 		assertThat(response.getViolations())
 			.extracting(Violation::field, Violation::message)
 			.containsExactlyInAnyOrder(tuple("createEvent.municipalityId", "not a valid municipality ID"));
+
+		verifyNoInteractions(eventServiceMock);
+	}
+
+	@Test
+	void getEventByIdWithInvalidId() {
+
+		// Arrange
+		final var id = "invalid";
+
+		// Act
+		final var response = webTestClient.get()
+			.uri(builder -> builder.path(PATH_EVENT_BY_ID).build(Map.of("municipalityId", MUNICIPALITY_ID, "id", id)))
+			.exchange()
+			.expectStatus().isBadRequest()
+			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
+			.expectBody(ConstraintViolationProblem.class)
+			.returnResult()
+			.getResponseBody();
+
+		// Assert
+		assertThat(response).isNotNull();
+		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
+		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
+		assertThat(response.getViolations())
+			.extracting(Violation::field, Violation::message)
+			.containsExactlyInAnyOrder(tuple("getEventById.id", "not a valid UUID"));
+
+		verifyNoInteractions(eventServiceMock);
+	}
+
+	@Test
+	void getEventByIdWithInvalidMunicipalityId() {
+
+		// Arrange
+		final var id = randomUUID().toString();
+
+		// Act
+		final var response = webTestClient.get()
+			.uri(builder -> builder.path(PATH_EVENT_BY_ID).build(Map.of("municipalityId", "invalid", "id", id)))
+			.exchange()
+			.expectStatus().isBadRequest()
+			.expectHeader().contentType(APPLICATION_PROBLEM_JSON)
+			.expectBody(ConstraintViolationProblem.class)
+			.returnResult()
+			.getResponseBody();
+
+		// Assert
+		assertThat(response).isNotNull();
+		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
+		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
+		assertThat(response.getViolations())
+			.extracting(Violation::field, Violation::message)
+			.containsExactlyInAnyOrder(tuple("getEventById.municipalityId", "not a valid municipality ID"));
 
 		verifyNoInteractions(eventServiceMock);
 	}

@@ -13,9 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class EventMapperTest {
 
+	private static final String ID = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 	private static final String LOG_KEY = "logKey";
 	private static final EventType EVENT_TYPE = EventType.CREATE;
+	private static final String SUB_TYPE = "ATTACHMENT";
+	private static final String REQUEST_GROUP_ID = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 	private static final String MESSAGE = "message";
+	private static final String DETAILS = "Filnamn 'abc.pdf'";
 	private static final String MUNICIPALITY_ID = "municipalityId";
 	private static final OffsetDateTime EXPIRE_DATE = OffsetDateTime.now().plusYears(10);
 	private static final String OWNER = "owner";
@@ -29,7 +33,10 @@ class EventMapperTest {
 	void toEventEntity() {
 		final var event = Event.create()
 			.withType(EVENT_TYPE)
+			.withSubType(SUB_TYPE)
+			.withRequestGroupId(REQUEST_GROUP_ID)
 			.withMessage(MESSAGE)
+			.withDetails(DETAILS)
 			.withExpires(EXPIRE_DATE)
 			.withOwner(OWNER)
 			.withCreated(TIMESTAMP)
@@ -41,7 +48,10 @@ class EventMapperTest {
 
 		assertThat(eventEntity.getLogKey()).isEqualTo(LOG_KEY);
 		assertThat(eventEntity.getType()).isEqualTo(EVENT_TYPE.toString());
+		assertThat(eventEntity.getSubType()).isEqualTo(SUB_TYPE);
+		assertThat(eventEntity.getRequestGroupId()).isEqualTo(REQUEST_GROUP_ID);
 		assertThat(eventEntity.getMessage()).isEqualTo(MESSAGE);
+		assertThat(eventEntity.getDetails()).isEqualTo(DETAILS);
 		assertThat(eventEntity.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
 		assertThat(eventEntity.getExpires()).isAtSameInstantAs(EXPIRE_DATE);
 		assertThat(eventEntity.getOwner()).isEqualTo(OWNER);
@@ -54,9 +64,13 @@ class EventMapperTest {
 	@Test
 	void toEvent() {
 		final var eventEntity = EventEntity.create()
+			.withId(ID)
 			.withLogKey(LOG_KEY)
 			.withType(EVENT_TYPE.toString())
+			.withSubType(SUB_TYPE)
+			.withRequestGroupId(REQUEST_GROUP_ID)
 			.withMessage(MESSAGE)
+			.withDetails(DETAILS)
 			.withMunicipalityId(MUNICIPALITY_ID)
 			.withExpires(EXPIRE_DATE)
 			.withOwner(OWNER)
@@ -67,9 +81,13 @@ class EventMapperTest {
 
 		final var event = EventMapper.toEvent(eventEntity);
 
+		assertThat(event.getId()).isEqualTo(ID);
 		assertThat(event.getLogKey()).isEqualTo(LOG_KEY);
 		assertThat(event.getType()).isEqualTo(EVENT_TYPE);
+		assertThat(event.getSubType()).isEqualTo(SUB_TYPE);
+		assertThat(event.getRequestGroupId()).isEqualTo(REQUEST_GROUP_ID);
 		assertThat(event.getMessage()).isEqualTo(MESSAGE);
+		assertThat(event.getDetails()).isEqualTo(DETAILS);
 		assertThat(event.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
 		assertThat(event.getExpires()).isAtSameInstantAs(EXPIRE_DATE);
 		assertThat(event.getOwner()).isEqualTo(OWNER);

@@ -6,8 +6,11 @@
         log_key varchar(255),
         municipality_id varchar(255),
         owner varchar(255),
+        request_group_id varchar(255),
         source_type varchar(255),
+        sub_type varchar(255),
         type varchar(255),
+        details longtext,
         message longtext,
         primary key (id)
     ) engine=InnoDB;
