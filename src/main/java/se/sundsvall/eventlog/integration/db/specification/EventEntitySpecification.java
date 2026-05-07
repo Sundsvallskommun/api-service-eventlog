@@ -22,6 +22,10 @@ public interface EventEntitySpecification {
 		return buildEqualFilter("municipalityId", municipalityId);
 	}
 
+	static Specification<EventEntity> withRequestGroupId(final String requestGroupId) {
+		return buildEqualFilter("requestGroupId", requestGroupId);
+	}
+
 	/**
 	 * Method builds an equal filter if value is not null. If value is null, method returns
 	 * an always-true predicate (meaning no filtering will be applied for sent in attribute)

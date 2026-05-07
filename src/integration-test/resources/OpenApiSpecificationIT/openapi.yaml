@@ -85,6 +85,13 @@ paths:
         schema:
           type: string
         example: f0882f1d-06bc-47fd-b017-1d8307f5ce95
+      - name: requestGroupId
+        in: query
+        description: Filter events by request group id
+        required: false
+        schema:
+          type: string
+        example: f47ac10b-58cc-4372-a567-0e02b2c3d479
       - name: filter
         in: query
         description: "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)"
@@ -204,6 +211,13 @@ paths:
         schema:
           type: string
         example: 2281
+      - name: requestGroupId
+        in: query
+        description: Filter events by request group id
+        required: false
+        schema:
+          type: string
+        example: f47ac10b-58cc-4372-a567-0e02b2c3d479
       - name: filter
         in: query
         description: "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)"

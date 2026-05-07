@@ -76,7 +76,25 @@ class EventResourceTest {
 			.expectStatus().isOk();
 
 		// Assert
-		verify(eventServiceMock).findEvents(eq(municipalityId), eq(logKey), any(), eq(Pageable.ofSize(20)));
+		verify(eventServiceMock).findEvents(eq(municipalityId), eq(logKey), eq(null), any(), eq(Pageable.ofSize(20)));
+	}
+
+	@Test
+	void getEventsWithLogkeyAndRequestGroupId() {
+
+		// Arrange
+		final var municipalityId = "2281";
+		final var logKey = UUID.randomUUID().toString();
+		final var requestGroupId = UUID.randomUUID().toString();
+
+		// Act
+		webTestClient.get()
+			.uri(builder -> builder.path(PATH).queryParam("requestGroupId", requestGroupId).build(Map.of("municipalityId", municipalityId, "logKey", logKey)))
+			.exchange()
+			.expectStatus().isOk();
+
+		// Assert
+		verify(eventServiceMock).findEvents(eq(municipalityId), eq(logKey), eq(requestGroupId), any(), eq(Pageable.ofSize(20)));
 	}
 
 	@Test
@@ -92,7 +110,7 @@ class EventResourceTest {
 			.expectStatus().isOk();
 
 		// Assert
-		verify(eventServiceMock).findEvents(eq(municipalityId), eq(null), any(), eq(Pageable.ofSize(20)));
+		verify(eventServiceMock).findEvents(eq(municipalityId), eq(null), eq(null), any(), eq(Pageable.ofSize(20)));
 	}
 
 	@Test

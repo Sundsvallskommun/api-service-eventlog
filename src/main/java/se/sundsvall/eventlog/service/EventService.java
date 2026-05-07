@@ -13,6 +13,7 @@ import se.sundsvall.eventlog.service.mapper.EventMapper;
 
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
+import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withRequestGroupId;
 import static se.sundsvall.eventlog.service.mapper.EventMapper.toEventEntity;
 
 @Service
@@ -35,11 +36,11 @@ public class EventService {
 			.orElseThrow(() -> Problem.notFound("Event with id '%s' not found".formatted(id)));
 	}
 
-	public Page<Event> findEvents(final String municipalityId, final String logKey, final Specification<EventEntity> filter, final Pageable pageable) {
-		var fullFilter = withMunicipalityId(municipalityId).and(withLogKey(logKey)).and(filter);
+	public Page<Event> findEvents(final String municipalityId, final String logKey, final String requestGroupId, final Specification<EventEntity> filter, final Pageable pageable) {
+		var fullFilter = withMunicipalityId(municipalityId).and(withLogKey(logKey)).and(withRequestGroupId(requestGroupId)).and(filter);
 
 		if (logKey == null) {
-			fullFilter = withMunicipalityId(municipalityId).and(filter);
+			fullFilter = withMunicipalityId(municipalityId).and(withRequestGroupId(requestGroupId)).and(filter);
 		}
 		final var matches = eventRepository.findAll(fullFilter, pageable);
 

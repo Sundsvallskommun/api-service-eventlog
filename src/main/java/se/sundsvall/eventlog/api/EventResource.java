@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
@@ -96,12 +97,13 @@ class EventResource {
 	ResponseEntity<Page<Event>> getEventsForLogKey(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "logKey", description = "Events stored under this UUID", example = "f0882f1d-06bc-47fd-b017-1d8307f5ce95") @ValidUuid @PathVariable final String logKey,
+		@Parameter(name = "requestGroupId", description = "Filter events by request group id", example = "f47ac10b-58cc-4372-a567-0e02b2c3d479") @RequestParam(required = false) final String requestGroupId,
 		@Parameter(description = "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)",
 			example = "metadata.key:'userId' and metadata.value:'john123'",
 			schema = @Schema(implementation = String.class)) @Nullable @Filter final Specification<EventEntity> filter,
 		@ParameterObject final Pageable pageable) {
 
-		return ok(eventService.findEvents(municipalityId, logKey, filter, pageable));
+		return ok(eventService.findEvents(municipalityId, logKey, requestGroupId, filter, pageable));
 	}
 
 	@GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -115,11 +117,12 @@ class EventResource {
 	})
 	ResponseEntity<Page<Event>> getEvents(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@Parameter(name = "requestGroupId", description = "Filter events by request group id", example = "f47ac10b-58cc-4372-a567-0e02b2c3d479") @RequestParam(required = false) final String requestGroupId,
 		@Parameter(description = "Syntax description: [spring-filter](https://github.com/turkraft/springfilter#syntax)",
 			example = "metadata.key:'userId' and metadata.value:'john123'",
 			schema = @Schema(implementation = String.class)) @Nullable @Filter final Specification<EventEntity> filter,
 		@ParameterObject final Pageable pageable) {
 
-		return ok(eventService.findEvents(municipalityId, null, filter, pageable));
+		return ok(eventService.findEvents(municipalityId, null, requestGroupId, filter, pageable));
 	}
 }
