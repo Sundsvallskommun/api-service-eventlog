@@ -53,6 +53,12 @@ public class EventEntity {
 	@Column(name = "request_group_id")
 	private String requestGroupId;
 
+	@Column(name = "executing_user_type")
+	private String executingUserType;
+
+	@Column(name = "executing_user_value")
+	private String executingUserValue;
+
 	@Column(name = "owner")
 	private String owner;
 
@@ -163,6 +169,32 @@ public class EventEntity {
 
 	public EventEntity withRequestGroupId(final String requestGroupId) {
 		this.requestGroupId = requestGroupId;
+		return this;
+	}
+
+	public String getExecutingUserType() {
+		return executingUserType;
+	}
+
+	public void setExecutingUserType(final String executingUserType) {
+		this.executingUserType = executingUserType;
+	}
+
+	public EventEntity withExecutingUserType(final String executingUserType) {
+		this.executingUserType = executingUserType;
+		return this;
+	}
+
+	public String getExecutingUserValue() {
+		return executingUserValue;
+	}
+
+	public void setExecutingUserValue(final String executingUserValue) {
+		this.executingUserValue = executingUserValue;
+	}
+
+	public EventEntity withExecutingUserValue(final String executingUserValue) {
+		this.executingUserValue = executingUserValue;
 		return this;
 	}
 
@@ -277,7 +309,7 @@ public class EventEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(created, details, expires, historyReference, id, logKey, message, metadata, municipalityId, owner, sourceType, subType, requestGroupId, type);
+		return Objects.hash(created, details, executingUserType, executingUserValue, expires, historyReference, id, logKey, message, metadata, municipalityId, owner, sourceType, subType, requestGroupId, type);
 	}
 
 	@Override
@@ -288,7 +320,8 @@ public class EventEntity {
 		if (!(obj instanceof final EventEntity other)) {
 			return false;
 		}
-		return Objects.equals(created, other.created) && Objects.equals(details, other.details) && Objects.equals(expires, other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(id, other.id)
+		return Objects.equals(created, other.created) && Objects.equals(details, other.details) && Objects.equals(executingUserType, other.executingUserType) && Objects.equals(executingUserValue, other.executingUserValue) && Objects.equals(expires,
+			other.expires) && Objects.equals(historyReference, other.historyReference) && Objects.equals(id, other.id)
 			&& Objects.equals(logKey, other.logKey) && Objects.equals(message, other.message) && Objects.equals(metadata, other.metadata) && Objects.equals(municipalityId, other.municipalityId) && Objects.equals(owner, other.owner)
 			&& Objects.equals(sourceType, other.sourceType) && Objects.equals(subType, other.subType) && Objects.equals(requestGroupId, other.requestGroupId) && Objects.equals(type, other.type);
 	}
@@ -297,7 +330,7 @@ public class EventEntity {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("EventEntity [id=").append(id).append(", municipalityId=").append(municipalityId).append(", logKey=").append(logKey).append(", type=").append(type).append(", subType=").append(subType).append(", requestGroupId=").append(
-			requestGroupId)
+			requestGroupId).append(", executingUserType=").append(executingUserType).append(", executingUserValue=").append(executingUserValue)
 			.append(", owner=").append(owner).append(", sourceType=").append(sourceType).append(", details=").append(details).append(", message=").append(message).append(", historyReference=").append(historyReference).append(", created=").append(created)
 			.append(", expires=").append(expires).append(", metadata=").append(metadata).append("]");
 		return builder.toString();

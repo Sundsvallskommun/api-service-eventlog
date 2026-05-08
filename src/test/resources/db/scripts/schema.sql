@@ -1,6 +1,8 @@
     create table event (
         created datetime(6),
         expires datetime(6),
+        executing_user_type varchar(255),
+        executing_user_value varchar(255),
         history_reference varchar(255),
         id varchar(255) not null,
         log_key varchar(255),

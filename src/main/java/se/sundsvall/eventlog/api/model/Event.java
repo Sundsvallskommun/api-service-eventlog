@@ -2,6 +2,7 @@ package se.sundsvall.eventlog.api.model;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
@@ -31,6 +32,10 @@ public class Event {
 	@Schema(description = "Request group id, groups events originating from the same operation", examples = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
 	@ValidUuid(nullable = true)
 	private String requestGroupId;
+
+	@Valid
+	@Schema(description = "The user that executed the action that caused this event", nullable = true)
+	private ExecutingUser executingUser;
 
 	@Schema(description = "Additional details about the event", examples = "Filnamn 'abc.pdf'")
 	private String details;
@@ -130,6 +135,19 @@ public class Event {
 
 	public Event withRequestGroupId(final String requestGroupId) {
 		this.requestGroupId = requestGroupId;
+		return this;
+	}
+
+	public ExecutingUser getExecutingUser() {
+		return executingUser;
+	}
+
+	public void setExecutingUser(final ExecutingUser executingUser) {
+		this.executingUser = executingUser;
+	}
+
+	public Event withExecutingUser(final ExecutingUser executingUser) {
+		this.executingUser = executingUser;
 		return this;
 	}
 
@@ -256,14 +274,14 @@ public class Event {
 			return false;
 		final Event event = (Event) o;
 		return Objects.equals(id, event.id) && Objects.equals(logKey, event.logKey) && type == event.type && Objects.equals(subType, event.subType) && Objects.equals(requestGroupId, event.requestGroupId)
-			&& Objects.equals(details, event.details) && Objects.equals(municipalityId, event.municipalityId) && Objects.equals(message, event.message) && Objects.equals(expires, event.expires)
+			&& Objects.equals(executingUser, event.executingUser) && Objects.equals(details, event.details) && Objects.equals(municipalityId, event.municipalityId) && Objects.equals(message, event.message) && Objects.equals(expires, event.expires)
 			&& Objects.equals(owner, event.owner) && Objects.equals(created, event.created) && Objects.equals(historyReference, event.historyReference) && Objects.equals(sourceType, event.sourceType)
 			&& Objects.equals(metadata, event.metadata);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, logKey, type, subType, requestGroupId, details, municipalityId, message, expires, owner, created, historyReference, sourceType, metadata);
+		return Objects.hash(id, logKey, type, subType, requestGroupId, executingUser, details, municipalityId, message, expires, owner, created, historyReference, sourceType, metadata);
 	}
 
 	@Override
@@ -274,6 +292,7 @@ public class Event {
 			", type=" + type +
 			", subType='" + subType + '\'' +
 			", requestGroupId='" + requestGroupId + '\'' +
+			", executingUser='" + executingUser + '\'' +
 			", details='" + details + '\'' +
 			", municipalityId='" + municipalityId + '\'' +
 			", message='" + message + '\'' +

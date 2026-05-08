@@ -46,13 +46,11 @@ class EventResourceTest {
 		// Arrange
 		final var municipalityId = "2281";
 		final var logKey = UUID.randomUUID().toString();
-		final var requestGroupId = UUID.randomUUID().toString();
 		final var event = makeEvent();
 
 		// Act
 		webTestClient.post()
 			.uri(builder -> builder.path(PATH).build(Map.of("municipalityId", municipalityId, "logKey", logKey)))
-			.header("X-Request-Group-Id", requestGroupId)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(event)
 			.exchange()
@@ -61,7 +59,7 @@ class EventResourceTest {
 			.expectBody().isEmpty();
 
 		// Assert
-		verify(eventServiceMock).createEvent(municipalityId, logKey, event.withRequestGroupId(requestGroupId));
+		verify(eventServiceMock).createEvent(municipalityId, logKey, event);
 	}
 
 	@Test
@@ -78,25 +76,7 @@ class EventResourceTest {
 			.expectStatus().isOk();
 
 		// Assert
-		verify(eventServiceMock).findEvents(eq(municipalityId), eq(logKey), eq(null), any(), eq(Pageable.ofSize(20)));
-	}
-
-	@Test
-	void getEventsWithLogkeyAndRequestGroupId() {
-
-		// Arrange
-		final var municipalityId = "2281";
-		final var logKey = UUID.randomUUID().toString();
-		final var requestGroupId = UUID.randomUUID().toString();
-
-		// Act
-		webTestClient.get()
-			.uri(builder -> builder.path(PATH).queryParam("requestGroupId", requestGroupId).build(Map.of("municipalityId", municipalityId, "logKey", logKey)))
-			.exchange()
-			.expectStatus().isOk();
-
-		// Assert
-		verify(eventServiceMock).findEvents(eq(municipalityId), eq(logKey), eq(requestGroupId), any(), eq(Pageable.ofSize(20)));
+		verify(eventServiceMock).findEvents(eq(municipalityId), eq(logKey), any(), eq(Pageable.ofSize(20)));
 	}
 
 	@Test
@@ -112,7 +92,7 @@ class EventResourceTest {
 			.expectStatus().isOk();
 
 		// Assert
-		verify(eventServiceMock).findEvents(eq(municipalityId), eq(null), eq(null), any(), eq(Pageable.ofSize(20)));
+		verify(eventServiceMock).findEvents(eq(municipalityId), eq(null), any(), eq(Pageable.ofSize(20)));
 	}
 
 	@Test

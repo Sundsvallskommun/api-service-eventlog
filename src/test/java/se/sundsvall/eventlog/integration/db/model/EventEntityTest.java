@@ -51,6 +51,8 @@ class EventEntityTest {
 		final var sourceType = "sourceType";
 		final var subType = "subType";
 		final var requestGroupId = UUID.randomUUID().toString();
+		final var executingUserType = "AD_USER";
+		final var executingUserValue = "john.doe";
 		final var type = "type";
 
 		final var entity = EventEntity.create()
@@ -67,6 +69,8 @@ class EventEntityTest {
 			.withSourceType(sourceType)
 			.withSubType(subType)
 			.withRequestGroupId(requestGroupId)
+			.withExecutingUserType(executingUserType)
+			.withExecutingUserValue(executingUserValue)
 			.withType(type);
 
 		assertThat(entity).hasNoNullFieldsOrProperties();
@@ -83,6 +87,8 @@ class EventEntityTest {
 		assertThat(entity.getSourceType()).isEqualTo(sourceType);
 		assertThat(entity.getSubType()).isEqualTo(subType);
 		assertThat(entity.getRequestGroupId()).isEqualTo(requestGroupId);
+		assertThat(entity.getExecutingUserType()).isEqualTo(executingUserType);
+		assertThat(entity.getExecutingUserValue()).isEqualTo(executingUserValue);
 		assertThat(entity.getType()).isEqualTo(type);
 	}
 

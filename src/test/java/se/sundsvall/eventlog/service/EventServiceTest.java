@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withLogKey;
 import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withMunicipalityId;
-import static se.sundsvall.eventlog.integration.db.specification.EventEntitySpecification.withRequestGroupId;
 
 @ExtendWith(MockitoExtension.class)
 class EventServiceTest {
@@ -38,7 +37,6 @@ class EventServiceTest {
 	private static final String MUNICIPALITY_ID = "municipalityId";
 	private static final String LOG_KEY = "logKey";
 	private static final String EVENT_ID = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
-	private static final String REQUEST_GROUP_ID = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 
 	@Mock
 	private EventRepository eventRepositoryMock;
@@ -85,30 +83,10 @@ class EventServiceTest {
 		try (final MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
 			mapper.when(() -> EventMapper.toEvent(any())).thenReturn(eventMock);
 
-			final var result = eventService.findEvents(MUNICIPALITY_ID, LOG_KEY, null, specificationMock, pageableMock);
+			final var result = eventService.findEvents(MUNICIPALITY_ID, LOG_KEY, specificationMock, pageableMock);
 
 			verify(eventRepositoryMock).findAll(specificationArgumentCaptor.capture(), same(pageableMock));
-			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(withMunicipalityId(MUNICIPALITY_ID).and(withLogKey(LOG_KEY)).and(withRequestGroupId(null)).and(specificationMock));
-			mapper.verify(() -> EventMapper.toEvent(same(eventEntityMock)));
-
-			assertThat(result.getSize()).isEqualTo(1);
-			assertThat(result).containsExactly(eventMock);
-		}
-	}
-
-	@Test
-	void findEventsWithRequestGroupId() {
-
-		when(eventRepositoryMock.findAll(Mockito.<Specification<EventEntity>>any(), any(Pageable.class))).thenReturn(eventEntityPageMock);
-		when(eventEntityPageMock.stream()).thenReturn(Stream.of(eventEntityMock));
-
-		try (final MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
-			mapper.when(() -> EventMapper.toEvent(any())).thenReturn(eventMock);
-
-			final var result = eventService.findEvents(MUNICIPALITY_ID, LOG_KEY, REQUEST_GROUP_ID, specificationMock, pageableMock);
-
-			verify(eventRepositoryMock).findAll(specificationArgumentCaptor.capture(), same(pageableMock));
-			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(withMunicipalityId(MUNICIPALITY_ID).and(withLogKey(LOG_KEY)).and(withRequestGroupId(REQUEST_GROUP_ID)).and(specificationMock));
+			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(withMunicipalityId(MUNICIPALITY_ID).and(withLogKey(LOG_KEY)).and(specificationMock));
 			mapper.verify(() -> EventMapper.toEvent(same(eventEntityMock)));
 
 			assertThat(result.getSize()).isEqualTo(1);
@@ -161,10 +139,10 @@ class EventServiceTest {
 		try (final MockedStatic<EventMapper> mapper = Mockito.mockStatic(EventMapper.class)) {
 			mapper.when(() -> EventMapper.toEvent(any())).thenReturn(eventMock);
 
-			final var result = eventService.findEvents(MUNICIPALITY_ID, null, null, specificationMock, pageableMock);
+			final var result = eventService.findEvents(MUNICIPALITY_ID, null, specificationMock, pageableMock);
 
 			verify(eventRepositoryMock).findAll(specificationArgumentCaptor.capture(), same(pageableMock));
-			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(withMunicipalityId(MUNICIPALITY_ID).and(withRequestGroupId(null)).and(specificationMock));
+			assertThat(specificationArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(withMunicipalityId(MUNICIPALITY_ID).and(specificationMock));
 			mapper.verify(() -> EventMapper.toEvent(same(eventEntityMock)));
 
 			assertThat(result.getSize()).isEqualTo(1);
