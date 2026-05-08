@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,8 +62,10 @@ class EventResource {
 	ResponseEntity<Void> createEvent(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "logKey", description = "Event will be stored under this UUID. Used to separate data under a unique id.", example = "f0882f1d-06bc-47fd-b017-1d8307f5ce95") @ValidUuid @PathVariable final String logKey,
+		@Parameter(name = "X-Request-Group-Id", description = "Groups events originating from the same request together", example = "f47ac10b-58cc-4372-a567-0e02b2c3d479") @RequestHeader(value = "X-Request-Group-Id", required = false) final String requestGroupId,
 		@Valid @NotNull @RequestBody final Event event) {
 
+		event.setRequestGroupId(requestGroupId);
 		eventService.createEvent(municipalityId, logKey, event);
 		return accepted()
 			.header(CONTENT_TYPE, ALL_VALUE)

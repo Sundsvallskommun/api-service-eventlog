@@ -46,11 +46,13 @@ class EventResourceTest {
 		// Arrange
 		final var municipalityId = "2281";
 		final var logKey = UUID.randomUUID().toString();
+		final var requestGroupId = UUID.randomUUID().toString();
 		final var event = makeEvent();
 
 		// Act
 		webTestClient.post()
 			.uri(builder -> builder.path(PATH).build(Map.of("municipalityId", municipalityId, "logKey", logKey)))
+			.header("X-Request-Group-Id", requestGroupId)
 			.contentType(APPLICATION_JSON)
 			.bodyValue(event)
 			.exchange()
@@ -59,7 +61,7 @@ class EventResourceTest {
 			.expectBody().isEmpty();
 
 		// Assert
-		verify(eventServiceMock).createEvent(municipalityId, logKey, event);
+		verify(eventServiceMock).createEvent(municipalityId, logKey, event.withRequestGroupId(requestGroupId));
 	}
 
 	@Test
