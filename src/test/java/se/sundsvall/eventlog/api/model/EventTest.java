@@ -42,6 +42,7 @@ class EventTest {
 		final var eventType = EventType.CREATE;
 		final var subType = "ATTACHMENT";
 		final var requestGroupId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+		final var executingUser = ExecutingUser.create().withType(ExecutingUserType.AD_USER).withValue("john.doe");
 		final var message = "message";
 		final var details = "Filnamn 'abc.pdf'";
 		final var municipalityId = "municipalityId";
@@ -58,6 +59,7 @@ class EventTest {
 			.withType(eventType)
 			.withSubType(subType)
 			.withRequestGroupId(requestGroupId)
+			.withExecutingUser(executingUser)
 			.withMessage(message)
 			.withDetails(details)
 			.withMunicipalityId(municipalityId)

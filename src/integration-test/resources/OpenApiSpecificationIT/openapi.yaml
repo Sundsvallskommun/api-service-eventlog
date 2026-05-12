@@ -5,7 +5,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: "2.2"
+  version: "2.3"
 servers:
 - url: http://localhost:52997
   description: Generated server url
@@ -371,6 +371,9 @@ components:
           description: Request group id, groups events originating from the same operation
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        executingUser:
+          $ref: "#/components/schemas/ExecutingUser"
+          description: The user that executed the action that caused this event
         municipalityId:
           type: string
           description: Municipality ID
@@ -425,6 +428,30 @@ components:
       - message
       - owner
       - type
+    ExecutingUser:
+      type: object
+      description: Executing user model
+      properties:
+        type:
+          $ref: "#/components/schemas/ExecutingUserType"
+        value:
+          type: string
+          description: The identifier of the executing user
+          examples:
+          - john.doe
+          minLength: 1
+      required:
+      - type
+      - value
+    ExecutingUserType:
+      type: string
+      description: |
+        ## Executing user types:
+        * `AD_USER` - Active Directory user
+        * `PARTY_ID` - Party identifier (UUID)
+      enum:
+      - AD_USER
+      - PARTY_ID
     EventType:
       type: string
       description: |

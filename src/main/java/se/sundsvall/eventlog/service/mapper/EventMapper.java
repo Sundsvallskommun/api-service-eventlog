@@ -2,6 +2,8 @@ package se.sundsvall.eventlog.service.mapper;
 
 import se.sundsvall.eventlog.api.model.Event;
 import se.sundsvall.eventlog.api.model.EventType;
+import se.sundsvall.eventlog.api.model.ExecutingUser;
+import se.sundsvall.eventlog.api.model.ExecutingUserType;
 import se.sundsvall.eventlog.api.model.Metadata;
 import se.sundsvall.eventlog.integration.db.model.EventEntity;
 import se.sundsvall.eventlog.integration.db.model.EventMetadata;
@@ -16,6 +18,8 @@ public final class EventMapper {
 			.withType(event.getType().toString())
 			.withSubType(event.getSubType())
 			.withRequestGroupId(event.getRequestGroupId())
+			.withExecutingUserType(event.getExecutingUser() != null ? event.getExecutingUser().getType().toString() : null)
+			.withExecutingUserValue(event.getExecutingUser() != null ? event.getExecutingUser().getValue() : null)
 			.withMessage(event.getMessage())
 			.withDetails(event.getDetails())
 			.withMunicipalityId(municipalityId)
@@ -39,6 +43,9 @@ public final class EventMapper {
 			.withType(EventType.valueOf(eventEntity.getType()))
 			.withSubType(eventEntity.getSubType())
 			.withRequestGroupId(eventEntity.getRequestGroupId())
+			.withExecutingUser(eventEntity.getExecutingUserType() != null
+				? ExecutingUser.create().withType(ExecutingUserType.valueOf(eventEntity.getExecutingUserType())).withValue(eventEntity.getExecutingUserValue())
+				: null)
 			.withMessage(eventEntity.getMessage())
 			.withDetails(eventEntity.getDetails())
 			.withMunicipalityId(eventEntity.getMunicipalityId())
