@@ -7,61 +7,12 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.3"
 servers:
-- url: http://localhost:52997
+- url: http://localhost:64210
   description: Generated server url
 tags:
 - name: Events
   description: Event operations
 paths:
-  /{municipalityId}/events/{id}:
-    get:
-      tags:
-      - Events
-      summary: Fetch log event by id
-      description: Fetch a single log event by its unique id
-      operationId: getEventById
-      parameters:
-      - name: municipalityId
-        in: path
-        description: Municipality id
-        required: true
-        schema:
-          type: string
-        example: 2281
-      - name: id
-        in: path
-        description: Event id
-        required: true
-        schema:
-          type: string
-        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-      responses:
-        "200":
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Event"
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                oneOf:
-                - $ref: "#/components/schemas/Problem"
-                - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "500":
-          description: Internal Server error
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
   /{municipalityId}/{logKey}:
     get:
       tags:
@@ -263,6 +214,55 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Problem"
+  /{municipalityId}/events/{id}:
+    get:
+      tags:
+      - Events
+      summary: Fetch log event by id
+      description: Fetch a single log event by its unique id
+      operationId: getEventById
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "500":
+          description: Internal Server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /api-docs:
     get:
       tags:
@@ -312,10 +312,10 @@ components:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        detail:
-          type: string
         causeAsProblem:
           $ref: "#/components/schemas/ThrowableProblem"
+        detail:
+          type: string
         instance:
           type: string
           format: uri
@@ -368,12 +368,19 @@ components:
           - ATTACHMENT
         requestGroupId:
           type: string
-          description: Request group id, groups events originating from the same operation
+          description: "Request group id, groups events originating from the same\
+            \ operation"
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afa6
         executingUser:
+          type: "null"
           $ref: "#/components/schemas/ExecutingUser"
           description: The user that executed the action that caused this event
+        details:
+          type: string
+          description: Additional details about the event
+          examples:
+          - Filnamn 'abc.pdf'
         municipalityId:
           type: string
           description: Municipality ID
@@ -387,7 +394,9 @@ components:
           - Request saved in database
           minLength: 1
         expires:
-          type: string
+          type:
+          - string
+          - "null"
           format: date-time
           description: Date when event can be scheduled for delete. 'null' means never
           examples:
@@ -406,20 +415,19 @@ components:
           - 2000-10-31T01:30:00.000+02:00
           readOnly: true
         historyReference:
-          type: string
+          type:
+          - string
+          - "null"
           description: Historical external reference to an immutable snapshot of data
           examples:
           - fbe2fb67-005c-4f26-990f-1c95b5f6933e
         sourceType:
-          type: string
+          type:
+          - string
+          - "null"
           description: Source which the event refers to
           examples:
           - errand
-        details:
-          type: string
-          description: Additional details about the event
-          examples:
-          - Filnamn 'abc.pdf'
         metadata:
           type: array
           items:
@@ -428,6 +436,28 @@ components:
       - message
       - owner
       - type
+    EventType:
+      type: string
+      description: |
+        ## CRUD events:
+        * `CREATE`
+        * `READ`
+        * `UPDATE`
+        * `DELETE`
+        ## System events:
+        * `ACCESS` - login, logout, authorization, throttling
+        * `EXECUTE` - send, queue, schedule, transfer, move
+        * `CANCEL` - terminate, abort, decommission, kill
+        * `DROP` - skip, omit, ignore, disregard
+      enum:
+      - CREATE
+      - READ
+      - UPDATE
+      - DELETE
+      - ACCESS
+      - EXECUTE
+      - CANCEL
+      - DROP
     ExecutingUser:
       type: object
       description: Executing user model
@@ -452,28 +482,6 @@ components:
       enum:
       - AD_USER
       - PARTY_ID
-    EventType:
-      type: string
-      description: |
-        ## CRUD events:
-        * `CREATE`
-        * `READ`
-        * `UPDATE`
-        * `DELETE`
-        ## System events:
-        * `ACCESS` - login, logout, authorization, throttling
-        * `EXECUTE` - send, queue, schedule, transfer, move
-        * `CANCEL` - terminate, abort, decommission, kill
-        * `DROP` - skip, omit, ignore, disregard
-      enum:
-      - CREATE
-      - READ
-      - UPDATE
-      - DELETE
-      - ACCESS
-      - EXECUTE
-      - CANCEL
-      - DROP
     Metadata:
       type: object
       description: Metadata model
@@ -496,23 +504,23 @@ components:
     PageEvent:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
-        numberOfElements:
+        totalElements:
           type: integer
-          format: int32
+          format: int64
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
-        sort:
-          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -528,6 +536,8 @@ components:
     PageableObject:
       type: object
       properties:
+        sort:
+          $ref: "#/components/schemas/SortObject"
         unpaged:
           type: boolean
         paged:
@@ -538,8 +548,6 @@ components:
         pageSize:
           type: integer
           format: int32
-        sort:
-          $ref: "#/components/schemas/SortObject"
         offset:
           type: integer
           format: int64
