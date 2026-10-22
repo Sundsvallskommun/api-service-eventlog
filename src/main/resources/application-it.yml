@@ -1,3 +1,7 @@
+# No broker in the tests: the listener stays in place without receiving, and the starter logs a warning naming it
+dept44:
+  rabbitmq:
+    enabled: false
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver

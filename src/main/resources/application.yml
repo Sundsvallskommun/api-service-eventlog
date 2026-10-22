@@ -1,3 +1,10 @@
+dept44:
+  rabbitmq:
+    enabled: true
+integration:
+  rabbitmq:
+    # The queue other services' events reach eventlog on, bound to the exchanges they publish them on
+    queue: api-fabriken.eventlog.events
 logging:
   level:
     root: INFO
@@ -21,6 +28,8 @@ spring:
       pool-name: eventlog-pool
   flyway:
     enabled: false
+  rabbitmq:
+    virtual-host: api-fabriken
   jpa:
     properties:
       jakarta:
